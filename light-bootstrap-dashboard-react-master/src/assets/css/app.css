@@ -1,0 +1,8 @@
+.lista ul li{
+    float: left;
+}
+
+
+.lista ul{
+    list-style-type: none;
+}
