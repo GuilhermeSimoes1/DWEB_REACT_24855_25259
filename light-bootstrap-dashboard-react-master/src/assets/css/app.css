@@ -1,8 +1,10 @@
-.lista ul li{
-    float: left;
+ul {
+    display: flex;
+    
 }
 
-
-.lista ul{
+ul li {
     list-style-type: none;
+    margin-right: 10px;
+    margin-top: 15px;
 }

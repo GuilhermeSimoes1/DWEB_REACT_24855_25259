@@ -26,14 +26,14 @@ const dashboardRoutes = [
     name: "Dashboard",
     icon: "nc-icon nc-chart-pie-35",
     component: Dashboard,
-    layout: "/admin"
+    layout: "/user" 
   },
   {
-    path: "/user",
+    path: "/profile",
     name: "User Profile",
     icon: "nc-icon nc-circle-09",
     component: UserProfile,
-    layout: "/admin"
+    layout: "/user"
   },
 
  

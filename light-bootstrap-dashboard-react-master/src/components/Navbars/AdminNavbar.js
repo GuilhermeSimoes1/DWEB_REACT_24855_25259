@@ -21,6 +21,8 @@ import { Navbar, Container, Nav, Dropdown, Button } from "react-bootstrap";
 import "../../assets/css/app.css";
 
 import routes from "routes.js";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
+//import { Link } from "react-router-dom";
 
 function Header() {
   const location = useLocation();
@@ -45,12 +47,15 @@ function Header() {
     return "Brand";
   };
 
-  //em vez de fazer desta forma fazer com lista nao ordenada
   return (
-    <Navbar bg="light" expand="lg">
-      <ul className= "lista" >
-        <li>ola</li>
-        <li>ola</li>
+    <Navbar bg="light" expand="lg" style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+      <Link to="/" className="navbar-brand"> Home </Link> 
+      <ul className= "lista">
+        <li><Link to="/user/dashboard">ola</Link></li>
+        <li><Link to="/ola">ola</Link></li>
+        <li><Link to="/ola">ola</Link></li>
+        <li><Link to="/ola">ola</Link></li>
+        <li><Link to="/ola">ola</Link></li>
       </ul>
     </Navbar>
   );
