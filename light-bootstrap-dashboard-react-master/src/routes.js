@@ -17,6 +17,9 @@
 */
 import Dashboard from "views/Dashboard.js";
 import UserProfile from "views/UserProfile.js";
+import Moeda from "views/Moedas.js";
+import Historico from "views/Historico.js"
+import Orcamento from "views/Orcamento.js";
 
 
 const dashboardRoutes = [
@@ -35,8 +38,29 @@ const dashboardRoutes = [
     component: UserProfile,
     layout: "/user"
   },
-
+  {
+    path: "/moeda",
+    name: "Moeda",
+    icon: "nc-icon nc-money-coins",
+    component: Moeda,
+    layout: "/user"
+  },
+  {
+    path: "/historico",
+    name: "Histórico",
+    icon: "nc-icon nc-single-copy-04",
+    component: Historico,
+    layout: "/user"
+  },
  
+  {
+    path: "/orcamento",
+    name: "Orçamentos",
+    icon: "nc-icon nc-bullet-list-67",
+    component: Orcamento,
+    layout: "/user"
+  },
+
 ];
 
 export default dashboardRoutes;

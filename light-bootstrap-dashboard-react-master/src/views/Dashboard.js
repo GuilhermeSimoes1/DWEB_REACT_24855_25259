@@ -1,23 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Doughnut from "../doughnut/Doughnut";
 import "../doughnut/Doughnut.css";
-import {
-  Button,
-  Card,
-  Table,
-  Container,
-  Row,
-  Col,
-  Form,
-  OverlayTrigger,
-  Tooltip,
-} from "react-bootstrap";
+import "../assets/css/Dashboard.css";
+import { Button, Card, Container, Row, Col, Form } from "react-bootstrap";
+import { AccountContext } from "../components/AccountContext/AccountContext.js";
 
 function Dashboard() {
-  const [accountValue, setAccountValue] = useState(0);
+  const { accountValue, setAccountValue, transactionHistory, setTransactionHistory } = useContext(AccountContext);
   const [inputValue, setInputValue] = useState(0);
   const [showForm, setShowForm] = useState(false);
   const [category, setCategory] = useState("");
+  const [descricao, setDescricao] = useState("");
   const [transactionType, setTransactionType] = useState("");
 
   const ganhoCategories = ["Salário", "Presentes", "Investimentos"];
@@ -33,7 +26,7 @@ function Dashboard() {
       },
     ],
   });
-
+  
   const [rendasDataGasto, setRendasDataGasto] = useState({
     labels: gastoCategories,
     datasets: [
@@ -56,6 +49,10 @@ function Dashboard() {
   const handleTransactionTypeChange = (event) => {
     setTransactionType(event.target.value);
     setCategory("");
+  };
+
+  const handleDescricaoChange = (event) => {
+    setDescricao(event.target.value);
   };
 
   const handleConfirm = () => {
@@ -84,8 +81,7 @@ function Dashboard() {
         if (index !== -1) {
           newData.datasets[0].data[index] += inputValue;
           newData.datasets[0].backgroundColor[index] = initialColors[index];
-          newData.datasets[0].hoverBackgroundColor[index] =
-            initialColors[index];
+          newData.datasets[0].hoverBackgroundColor[index] = initialColors[index];
         }
         return newData;
       });
@@ -96,13 +92,27 @@ function Dashboard() {
         if (index !== -1) {
           newData.datasets[0].data[index] += inputValue;
           newData.datasets[0].backgroundColor[index] = initialColors[index];
-          newData.datasets[0].hoverBackgroundColor[index] =
-            initialColors[index];
+          newData.datasets[0].hoverBackgroundColor[index] = initialColors[index];
         }
         return newData;
       });
     }
 
+    // Adicionar a transação ao histórico
+    const newTransaction = {
+      value: inputValue,
+      type: transactionType,
+      category: category,
+      descricao: descricao,
+      accountValue: transactionType === "ganho" ? accountValue + inputValue : accountValue - inputValue,
+    };
+    setTransactionHistory([...transactionHistory, newTransaction]);
+
+   
+    setInputValue(0);
+    setCategory("");
+    
+    setDescricao("");
     setShowForm(false);
   };
 
@@ -176,8 +186,15 @@ function Dashboard() {
                   </option>
                 ))}
             </select>
+            <input
+              type="text"
+              value={descricao}
+              onChange={handleDescricaoChange}
+              className="input descricao-input"
+              placeholder="Descrição"
+            />
             <button
-              type="button"
+              type="button-conf"
               className="btn btn-outline-success"
               onClick={handleConfirm}
             >
@@ -185,7 +202,7 @@ function Dashboard() {
             </button>
           </div>
         </Col>
-        <Col lg="6" style={{marginRight: "200px"}}>
+        <Col lg="6" style={{ marginRight: "200px" }}>
           {transactionType === "ganho" && <Doughnut data={rendasDataGanho} />}
           {transactionType === "gasto" && <Doughnut data={rendasDataGasto} />}
         </Col>
