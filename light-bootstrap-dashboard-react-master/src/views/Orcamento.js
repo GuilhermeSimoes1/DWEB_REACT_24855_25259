@@ -131,6 +131,7 @@ function Orcamento() {
                   placeholder="Digite o nome do orçamento"
                   value={nome}
                   onChange={(e) => setNome(e.target.value)}
+                  className="input mt-2"
                 />
               </Form.Group>
               <Form.Group controlId="formValor">
@@ -140,6 +141,7 @@ function Orcamento() {
                   placeholder="Digite o valor necessário"
                   value={valorNecessario}
                   onChange={(e) => setValorNecessario(e.target.value)}
+                  className="input mt-2"
                 />
               </Form.Group>
               <Form.Group controlId="formDataFinal">
@@ -148,6 +150,7 @@ function Orcamento() {
                   type="date"
                   value={dataFinal}
                   onChange={(e) => setDataFinal(e.target.value)}
+                  className="input mt-2"
                 />
               </Form.Group>
               <Form.Group controlId="formValorAtual">
@@ -157,9 +160,10 @@ function Orcamento() {
                   placeholder="Digite o valor atual"
                   value={valorAtual}
                   onChange={(e) => setValorAtual(e.target.value)}
+                  className="input mt-2"
                 />
               </Form.Group>
-              <Button variant="primary" type="submit">
+              <Button variant="primary" type="submit" >
                 Adicionar
               </Button>
             </Form>
