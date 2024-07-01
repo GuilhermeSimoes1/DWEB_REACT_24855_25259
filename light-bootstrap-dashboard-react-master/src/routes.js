@@ -20,7 +20,11 @@ import UserProfile from "views/UserProfile.js";
 import Moeda from "views/Moedas.js";
 import Historico from "views/Historico.js"
 import Orcamento from "views/Orcamento.js";
+import Signup from "views/Signup.js";
+import Login from "views/Login.js";
+import Hero from "views/Hero.js";
 
+//os icons são do now ui icons
 
 const dashboardRoutes = [
   
@@ -59,6 +63,28 @@ const dashboardRoutes = [
     icon: "nc-icon nc-bullet-list-67",
     component: Orcamento,
     layout: "/user"
+  },
+  {
+    path: "/signup",
+    name: "Sign Up",
+    icon: "nc-icon nc-single-02",
+    component: Signup,
+    layout: "/user"
+  },
+  {
+    path: "/login",
+    name: "Login",
+    icon: "nc-icon nc-key-25",
+    component: Login,
+    layout: "/user"
+  },
+
+  {
+    path: "/hero",
+    name: "Hero",
+    icon: "nc-icon nc-chart-pie-35",
+    component: Hero,
+    layout: "/user" 
   },
 
 ];

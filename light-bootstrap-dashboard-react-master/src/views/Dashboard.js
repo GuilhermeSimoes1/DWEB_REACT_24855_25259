@@ -4,6 +4,7 @@ import { AccountContext } from "../components/AccountContext/AccountContext.js";
 import Doughnut from "../doughnut/Doughnut"; // Verifique se o caminho do seu componente Doughnut está correto
 import "../doughnut/Doughnut.css";
 import "../assets/css/Dashboard.css";
+import Task from "../components/Task.js";
 
 function Dashboard() {
   const { accountValue, setAccountValue, transactionHistory, setTransactionHistory } = useContext(AccountContext);
@@ -187,8 +188,8 @@ function Dashboard() {
               />
               
             </Form.Group>
-            <Button variant="success" onClick={() => setShowForm(true)}>
-              +
+            <Button variant="success" onClick={() => setShowForm(prevShowForm => !prevShowForm)}>
+              {showForm ? '-' : '+'}
             </Button>
             {showForm && (
               <div className="form show">
@@ -246,6 +247,9 @@ function Dashboard() {
                 </Button>
               </div>
             )}
+            <Form style={{marginTop: "150px"}}>
+              <Task />
+            </Form>
           </Form>
         </Col>
         <Col lg="6" style={{ marginRight: "200px" }}>

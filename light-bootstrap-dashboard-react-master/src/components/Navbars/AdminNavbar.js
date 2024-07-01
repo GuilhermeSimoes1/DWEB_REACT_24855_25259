@@ -22,7 +22,6 @@ import "../../assets/css/app.css";
 
 import routes from "routes.js";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
-//import { Link } from "react-router-dom";
 
 function Header() {
   const location = useLocation();
@@ -48,14 +47,13 @@ function Header() {
   };
 
   return (
-    <Navbar bg="light" expand="lg" style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
-      <Link to="/" className="navbar-brand"> Home </Link> 
-      <ul className= "lista">
-        <li><Link to="/user/dashboard">ola</Link></li>
-        <li><Link to="/ola">ola</Link></li>
-        <li><Link to="/ola">ola</Link></li>
-        <li><Link to="/ola">ola</Link></li>
-        <li><Link to="/ola">ola</Link></li>
+    <Navbar bg="light" expand="lg" style={{display: "flex", justifyContent: "flex-end;", alignItems: "center", height: "70px"}}>
+      <ul className= "navbar-nav ml-auto" >
+        <li className="nav-item mt-2"><Link to="/user/dashboard">Home</Link></li>
+        <li className="nav-item mt-2"><Link to="/">ola</Link></li>
+        <li className="nav-item mt-2"><Link to="/ola">ola</Link></li>
+        <li className="nav-item mt-2"><Link to="/ola">ola</Link></li>
+        <li className="nav-item mt-2"><Link to="/ola">ola</Link></li>
       </ul>
     </Navbar>
   );
