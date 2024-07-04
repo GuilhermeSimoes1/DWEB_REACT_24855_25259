@@ -20,14 +20,14 @@ import UserProfile from "views/UserProfile.js";
 import Moeda from "views/Moedas.js";
 import Historico from "views/Historico.js"
 import Orcamento from "views/Orcamento.js";
-import Signup from "views/Signup.js";
-import Login from "views/Login.js";
-import Hero from "views/Hero.js";
+import Contas from "views/Contas.js";
+import Informacoes from "views/Informacoes.js"
+
 
 //os icons são do now ui icons
 
 const dashboardRoutes = [
-  
+ 
   {
     path: "/dashboard",
     name: "Dashboard",
@@ -64,28 +64,16 @@ const dashboardRoutes = [
     component: Orcamento,
     layout: "/user"
   },
+
   {
-    path: "/signup",
-    name: "Sign Up",
-    icon: "nc-icon nc-single-02",
-    component: Signup,
-    layout: "/user"
-  },
-  {
-    path: "/login",
-    name: "Login",
-    icon: "nc-icon nc-key-25",
-    component: Login,
+    path: "/contas",
+    name: "Contas",
+    icon: "nc-icon nc-bank",
+    component: Contas,
     layout: "/user"
   },
 
-  {
-    path: "/hero",
-    name: "Hero",
-    icon: "nc-icon nc-chart-pie-35",
-    component: Hero,
-    layout: "/user" 
-  },
+
 
 ];
 

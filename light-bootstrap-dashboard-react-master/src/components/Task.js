@@ -22,12 +22,12 @@ const TaskAccordion = () => {
   return (
     <Container>
       <Row className="justify-content-center mt-5">
-        <Col xs={12} md={8}>
+        <Col>
           <Form.Group className="mb-3">
             <Form.Label>Nova Tarefa</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Digite sua tarefa"
+              placeholder="Digite a sua tarefa"
               value={taskInput}
               onChange={(e) => setTaskInput(e.target.value)}
             />
@@ -46,7 +46,7 @@ const TaskAccordion = () => {
         </Col>
       </Row>
       <Row className="justify-content-center mt-3">
-        <Col xs={12} md={8} >
+        <Col>
           <Accordion className="accordion-flush">
             {tasks.map((task, index) => (
               <Accordion.Item eventKey={index.toString()} key={index} className="custom-accordion-item">

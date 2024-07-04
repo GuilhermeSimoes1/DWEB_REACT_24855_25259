@@ -1,27 +1,31 @@
-.login-container {
+/* SignupLogin.css */
+
+.SignupLogin .login-container {
     background: #fff;
     padding: 40px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     border-radius: 8px;
     width: 400px;
+    margin: auto; /* Adiciona esta linha para centralizar horizontalmente */
+    margin-top: 50px; /* Adicione margem superior para espaçamento */
 }
 
-.form-box {
+.SignupLogin .form-box {
     width: 100%;
 }
 
-h2 {
+.SignupLogin h2 {
     text-align: center;
     margin-bottom: 20px;
     color: #333;
 }
 
-.input-box {
+.SignupLogin .input-box {
     position: relative;
     margin-bottom: 30px;
 }
 
-.input-box input {
+.SignupLogin .input-box input {
     width: 100%;
     padding: 10px;
     background: #f1f1f1;
@@ -30,7 +34,7 @@ h2 {
     border-radius: 4px;
 }
 
-.input-box label {
+.SignupLogin .input-box label {
     position: absolute;
     top: 10px;
     left: 10px;
@@ -41,17 +45,17 @@ h2 {
     pointer-events: none;
 }
 
-.input-box input:focus + label,
-.input-box input:valid + label {
+.SignupLogin .input-box input:focus + label,
+.SignupLogin .input-box input:valid + label {
     top: -18px;
     left: 10px;
     color: #333;
     font-size: 12px;
 }
 
-.btna {
+.SignupLogin .btna {
     width: 100%;
-    background: #4caf50;
+    background: #00aaff;
     border: none;
     padding: 10px;
     cursor: pointer;
@@ -60,27 +64,28 @@ h2 {
     transition: 0.3s;
 }
 
-.btna:hover {
-    background: #45a049;
+.SignupLogin .btna:hover {
+    background: #0998e0fe;
 }
 
-.error {
+.SignupLogin .error {
     color: red;
     font-size: 0.9em;
     margin-top: 5px;
     display: block;
 }
-.error:hover {
+
+.SignupLogin .error:hover {
     color: red;
 }
 
-p {
+.SignupLogin p {
     text-align: center;
     margin-top: 20px;
     color: #666;
 }
 
-p a {
-    color: #4caf50;
+.SignupLogin p a {
+    color: #00aaff;
     text-decoration: none;
 }

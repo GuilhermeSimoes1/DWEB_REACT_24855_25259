@@ -3,13 +3,15 @@ import { Container, Row, Col, Table } from "react-bootstrap";
 import { AccountContext } from "../components/AccountContext/AccountContext.js";
 
 function Historico() {
-  const { transactionHistory } = useContext(AccountContext);
+  const { transactionHistory, selectedAccountId } = useContext(AccountContext);
+
+  const filteredTransactions = transactionHistory.filter(transaction => transaction.accountId === selectedAccountId);
 
   return (
     <Container fluid>
       <Row>
         <Col>
-          <h2>Histórico de Transações</h2>
+          <h2 style={{textAlign: 'center', marginBottom:"50px" }}>Histórico de Transações</h2>
           <Table striped bordered hover>
             <thead>
               <tr>
@@ -21,7 +23,7 @@ function Historico() {
               </tr>
             </thead>
             <tbody>
-              {transactionHistory.map((transaction, index) => (
+              {filteredTransactions.map((transaction, index) => (
                 <tr key={index}>
                   <td>{transaction.value}</td>
                   <td>{transaction.type}</td>

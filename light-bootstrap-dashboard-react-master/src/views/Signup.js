@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../assets/css/ola.css';
+import '../assets/css/SignupLogin.css';
 
 export const Signup = () => {
     const [password, setPassword] = useState('');
@@ -18,32 +18,35 @@ export const Signup = () => {
     }, [password, confirmPassword]);
 
     return (
-        <div className="login-container">
-            <div className="form-box">
-                <h2>Sign Up</h2>
-                <form action="" method="POST">
-                    <div className="input-box">
-                        <input type="text" name="username" required />
-                        <label>Username</label>
-                    </div>
-                    <div className="input-box">
-                        <input type="email" name="email" required />
-                        <label>Email</label>
-                    </div>
-                    <div className="input-box">
-                        <input type={passType} name="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-                        <label>Password</label>
-                    </div>
-                    <div className="input-box">
-                        <input type={passType} name="confirmPassword" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
-                        <label>Confirm Password</label>
-                        <button type="button" onClick={handleShowPassword} className="btn"> Show Password </button>
-                        {!compare && <a className="error">Passwords do not match!</a>}
-                    </div>
+        <div className="SignupLogin">
+            <div className="login-container">
+                <div className="form-box">
+                    <h2>Sign Up</h2>
+                    <form action="" method="POST">
+                        <div className="input-box">
+                            <input type="text" name="username" required />
+                            <label>Username</label>
+                        </div>
+                        <div className="input-box">
+                            <input type="email" name="email" required />
+                            <label>Email</label>
+                        </div>
+                        <div className="input-box">
+                            <input type={passType} name="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                            <label>Password</label>
+                        </div>
+                        <div className="input-box">
+                            <input type={passType} name="confirmPassword" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+                            <label>Confirm Password</label>
+                            <button type="button" onClick={handleShowPassword} className="btn"> Show Password </button>
+                            {!compare && <span className="error">Passwords do not match!</span>}
+                        </div>
 
-                    <input type="submit" className="btna"/>
-                </form>
-                <p>Already have an account? <a href="/user/login">Login</a></p>
+                        <input type="submit" className="btna" />
+                    </form>
+                    <p>Already have an account? <a href="/login">Login</a></p>
+                    <p>Initial page: <a href="/hero">Comeback</a></p>
+                </div>
             </div>
         </div>
     );

@@ -1,22 +1,31 @@
 import React, { useState, useContext } from "react";
 import { Button, Card, Container, Row, Col, Form } from "react-bootstrap";
 import { AccountContext } from "../components/AccountContext/AccountContext.js";
-import Doughnut from "../doughnut/Doughnut"; // Verifique se o caminho do seu componente Doughnut está correto
+import Doughnut from "../doughnut/Doughnut";
 import "../doughnut/Doughnut.css";
 import "../assets/css/Dashboard.css";
 import Task from "../components/Task.js";
 
 function Dashboard() {
-  const { accountValue, setAccountValue, transactionHistory, setTransactionHistory } = useContext(AccountContext);
-  const [inputValue, setInputValue] = useState('');
+  const {
+    accounts,
+    setAccounts,
+    selectedAccountId,
+    setSelectedAccountId,
+    getSelectedAccount,
+    transactionHistory,
+    setTransactionHistory,
+  } = useContext(AccountContext);
+
+  const [inputValue, setInputValue] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [categoryValues, setCategoryValues] = useState({});
   const [descricao, setDescricao] = useState("");
   const [transactionType, setTransactionType] = useState("");
 
-  const ganhoCategories = ["Salário", "Presentes", "Investimentos"];
-  const gastoCategories = ["Saúde", "Lazer", "Casa", "Educação", "Presentes"];
+  const ganhoCategories = ["Salário", "Presentes", "Investimentos", "Outros"];
+  const gastoCategories = ["Saúde", "Lazer", "Casa", "Educação", "Presentes", "Outros"];
 
   const [rendasDataGanho, setRendasDataGanho] = useState({
     labels: ganhoCategories,
@@ -70,8 +79,7 @@ function Dashboard() {
     setCategoryValues({});
   };
 
-  const 
-  handleDescricaoChange = (event) => {
+  const handleDescricaoChange = (event) => {
     setDescricao(event.target.value);
   };
 
@@ -96,18 +104,36 @@ function Dashboard() {
   };
 
   const handleConfirm = () => {
-    const totalCategoryValue = Object.values(categoryValues).reduce((a, b) => a + Number(b), 0);
+    const totalCategoryValue = Object.values(categoryValues).reduce(
+      (a, b) => a + Number(b),
+      0
+    );
 
     if (totalCategoryValue !== inputValue) {
-      alert("A soma dos valores das categorias deve ser igual ao valor da transação.");
+      alert(
+        "A soma dos valores das categorias deve ser igual ao valor da transação."
+      );
       return;
     }
 
-    if (transactionType === "ganho") {
-      setAccountValue(accountValue + inputValue);
-    } else if (transactionType === "gasto") {
-      setAccountValue(accountValue - inputValue);
+    const selectedAccount = getSelectedAccount();
+    if (!selectedAccount) {
+      alert("Nenhuma conta selecionada.");
+      return;
     }
+
+    const newAccountValue =
+      transactionType === "ganho"
+        ? selectedAccount.accountValue + inputValue
+        : selectedAccount.accountValue - inputValue;
+
+    setAccounts(
+      accounts.map((account) =>
+        account.id === selectedAccountId
+          ? { ...account, accountValue: newAccountValue }
+          : account
+      )
+    );
 
     const updateData = (data, categories, values) => {
       categories.forEach((category) => {
@@ -120,23 +146,26 @@ function Dashboard() {
     };
 
     if (transactionType === "ganho") {
-      setRendasDataGanho((prevData) => updateData({ ...prevData }, selectedCategories, categoryValues));
+      setRendasDataGanho((prevData) =>
+        updateData({ ...prevData }, selectedCategories, categoryValues)
+      );
     } else if (transactionType === "gasto") {
-      setRendasDataGasto((prevData) => updateData({ ...prevData }, selectedCategories, categoryValues));
+      setRendasDataGasto((prevData) =>
+        updateData({ ...prevData }, selectedCategories, categoryValues)
+      );
     }
 
-    // Adicionar a transação ao histórico
     const newTransaction = {
+      accountId: selectedAccountId,
       value: inputValue,
       type: transactionType,
       categories: selectedCategories,
       categoryValues: categoryValues,
       descricao: descricao,
-      accountValue: transactionType === "ganho" ? accountValue + inputValue : accountValue - inputValue,
+      accountValue: newAccountValue,
     };
     setTransactionHistory([...transactionHistory, newTransaction]);
 
-    // Reset form
     setInputValue(0);
     setSelectedCategories([]);
     setCategoryValues({});
@@ -148,18 +177,42 @@ function Dashboard() {
     <Container fluid>
       <Row>
         <Col lg="3" sm="6">
+          <Form.Group controlId="formAccountSelect">
+            <Form.Label>Selecionar Conta</Form.Label>
+            <Form.Control
+              as="select"
+              style={{ marginBottom: "40px" }}
+              value={selectedAccountId || ""}
+              onChange={(e) => setSelectedAccountId(Number(e.target.value))}
+            >
+              <option value="" disabled>
+                Selecione uma conta
+              </option>
+              {accounts.map((account) => (
+                <option key={account.id} value={account.id}>
+                  {account.name}
+                </option>
+              ))}
+            </Form.Control>
+          </Form.Group>
           <Card className="card-stats">
             <Card.Body>
               <Row>
                 <Col xs="5">
                   <div className="icon-big text-center icon-warning">
-                    <i className="nc-icon nc-light-3 text-success"></i>
+                    <i className="nc-icon nc-money-coins text-success"></i>
                   </div>
                 </Col>
                 <Col xs="7">
                   <div className="numbers">
                     <p className="card-category">Valor da conta</p>
-                    <Card.Title as="h4">{accountValue} EUR</Card.Title>
+                    {selectedAccountId ? (
+                      <Card.Title as="h4">
+                        {getSelectedAccount()?.accountValue} EUR
+                      </Card.Title>
+                    ) : (
+                      <Card.Title as="h4">Nenhuma conta selecionada</Card.Title>
+                    )}
                   </div>
                 </Col>
               </Row>
@@ -186,7 +239,6 @@ function Dashboard() {
                 placeholder="Digite o valor"
                 className="input mt-2"
               />
-              
             </Form.Group>
             <Button variant="success" onClick={() => setShowForm(prevShowForm => !prevShowForm)}>
               {showForm ? '-' : '+'}
@@ -208,7 +260,10 @@ function Dashboard() {
                 </Form.Group>
                 {transactionType && (
                   <div>
-                    {(transactionType === "ganho" ? ganhoCategories : gastoCategories).map((cat) => (
+                    {(transactionType === "ganho"
+                      ? ganhoCategories
+                      : gastoCategories
+                    ).map((cat) => (
                       <Form.Group controlId={`formCategory-${cat}`} key={cat}>
                         <Form.Check
                           type="checkbox"
@@ -223,7 +278,9 @@ function Dashboard() {
                           <Form.Control
                             type="number"
                             value={categoryValues[cat]}
-                            onChange={(e) => handleCategoryValueChange(cat, e.target.value)}
+                            onChange={(e) =>
+                              handleCategoryValueChange(cat, e.target.value)
+                            }
                             placeholder="Digite o valor necessário"
                             className="input mt-2"
                           />
@@ -247,13 +304,12 @@ function Dashboard() {
                 </Button>
               </div>
             )}
-            <Form style={{marginTop: "150px"}}>
+            <Form style={{marginTop: "100px"}}>
               <Task />
             </Form>
           </Form>
         </Col>
         <Col lg="6" style={{ marginRight: "200px" }}>
-          {/* Renderiza o gráfico de acordo com o tipo de transação selecionada */}
           {transactionType === "ganho" && <Doughnut data={rendasDataGanho} />}
           {transactionType === "gasto" && <Doughnut data={rendasDataGasto} />}
         </Col>

@@ -1,41 +1,67 @@
 .hero-section {
-    background-size: cover;
-    background-position: center;
-    height: 100vh; /* Altura igual à altura da tela */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: #fff; /* Cor do texto */
-  }
-  
-  .hero-content {
-    max-width: 600px;
-    padding: 20px;
-  }
-  
-  .hero-content h1 {
-    font-size: 3rem;
-    margin-bottom: 20px;
-    color: black;
-  }
-  
-  .hero-content p {
-    font-size: 1.5rem;
-    margin-bottom: 30px;
-  }
-  
-  .hero-content button {
-    padding: 10px 20px;
-    font-size: 1.2rem;
-    background-color: #007bff; /* Cor de fundo do botão */
-    color: #fff; /* Cor do texto do botão */
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .hero-content button:hover {
-    background-color: #0056b3; /* Cor de fundo do botão ao passar o mouse */
-  }
-  
+  background-size: cover;
+  background-position: center;
+  height: 100vh; /* Altura igual à altura da tela */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff; /* Cor do texto */
+  position: relative;
+}
+
+.hero-content .hero-title-gragas {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 7rem; /* Aumentei um pouco mais o tamanho */
+  font-weight: bold;
+  color: #00aaff; /* Azul mais claro */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+
+
+
+.hero-content {
+  max-width: 600px;
+  padding: 20px;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-section {
+  background-image: url('https://img.freepik.com/vetores-gratis/fundo-de-wireframe-geometrico-abstrato_52683-59421.jpg');
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  color: black;
+}
+
+.hero-content p {
+  font-size: 1.5rem;
+  margin-bottom: 30px;
+  color: #666
+}
+
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* Espaçamento entre os botões */
+}
+
+.hero-buttons button {
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  background-color: #007bff; /* Cor de fundo do botão */
+  color: #fff; /* Cor do texto do botão */
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.hero-buttons button:hover {
+  background-color: #0056b3; /* Cor de fundo do botão ao passar o mouse */
+}

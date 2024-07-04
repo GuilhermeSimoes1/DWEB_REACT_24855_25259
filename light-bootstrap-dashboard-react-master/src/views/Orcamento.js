@@ -9,6 +9,8 @@ import {
   Modal,
 } from "react-bootstrap";
 
+import "../assets/css/Orcamento.css";
+
 function Orcamento() {
   // Estado para armazenar a lista de orçamentos
   const [orcamentos, setOrcamentos] = useState([]);
@@ -112,12 +114,12 @@ function Orcamento() {
 
   return (
     <Container>
-      <Row>
-        <Col>
-          <h1>Lista de Orçamentos</h1>
+      <Row className="justify-content-center">
+        <Col xs={12} md={10}>
+          <h1 style={{marginBottom:"100px"}} className="text-center">Lista de Orçamentos</h1>
 
-          <div>
-            <h2>Adicionar Orçamento</h2>
+          <div className="mb-4">
+            <h2 style={{marginBottom:"50px"}}>Adicionar Orçamento</h2>
             <Form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -125,52 +127,52 @@ function Orcamento() {
               }}
             >
               <Form.Group controlId="formNome">
-                <Form.Label>Nome do Orçamento</Form.Label>
+                <Form.Label >Nome do Orçamento</Form.Label>
                 <Form.Control
+                   style={{marginBottom:"30px"}}
                   type="text"
                   placeholder="Digite o nome do orçamento"
                   value={nome}
                   onChange={(e) => setNome(e.target.value)}
-                  className="input mt-2"
                 />
               </Form.Group>
               <Form.Group controlId="formValor">
                 <Form.Label>Valor Necessário</Form.Label>
                 <Form.Control
+                  style={{marginBottom:"30px"}}
                   type="number"
                   placeholder="Digite o valor necessário"
                   value={valorNecessario}
                   onChange={(e) => setValorNecessario(e.target.value)}
-                  className="input mt-2"
                 />
               </Form.Group>
               <Form.Group controlId="formDataFinal">
                 <Form.Label>Data Final</Form.Label>
                 <Form.Control
+                  style={{marginBottom:"30px"}}
                   type="date"
                   value={dataFinal}
                   onChange={(e) => setDataFinal(e.target.value)}
-                  className="input mt-2"
                 />
               </Form.Group>
               <Form.Group controlId="formValorAtual">
-                <Form.Label>Valor Atual</Form.Label>
+                <Form.Label>Valor de entrada</Form.Label>
                 <Form.Control
+                  style={{marginBottom:"30px"}}
                   type="number"
-                  placeholder="Digite o valor atual"
+                  placeholder="Digite o valor de entrada"
                   value={valorAtual}
                   onChange={(e) => setValorAtual(e.target.value)}
-                  className="input mt-2"
                 />
               </Form.Group>
-              <Button variant="primary" type="submit" className="oi">
+              <Button variant="primary" type="submit">
                 Adicionar
               </Button>
             </Form>
           </div>
 
           <div>
-            <h2>Orçamentos</h2>
+            <h2 className="text-center mb-4">Orçamentos</h2>
             <Table striped bordered hover>
               <thead>
                 <tr>
@@ -214,7 +216,10 @@ function Orcamento() {
                           >
                             Salvar
                           </Button>{" "}
-                          <Button variant="secondary" onClick={cancelarEdicao}>
+                          <Button
+                            variant="secondary"
+                            onClick={cancelarEdicao}
+                          >
                             Cancelar
                           </Button>
                         </>
