@@ -14,6 +14,7 @@ import Signup from "views/Signup.js";
 import { AccountProvider } from './components/AccountContext/AccountContext.js';
 import Informacoes from "views/Informacoes.js";
 
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
