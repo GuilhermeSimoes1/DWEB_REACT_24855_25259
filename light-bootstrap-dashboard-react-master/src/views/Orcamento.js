@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Row,
@@ -8,22 +8,20 @@ import {
   Button,
   Modal,
 } from "react-bootstrap";
-
 import "../assets/css/Orcamento.css";
+import User from "./UserProfile";
 
 function Orcamento() {
   // Estado para armazenar a lista de orçamentos
   const [orcamentos, setOrcamentos] = useState([]);
 
-  // Estado para armazenar os valores do formulário de edição
-  const [editandoIndex, setEditandoIndex] = useState(-1);
-  const [valorAtualEdit, setValorAtualEdit] = useState("");
-
-  // Estado para armazenar os valores do formulário de adição
+  // Estado para armazenar os valores do formulário de adição e edição
   const [nome, setNome] = useState("");
   const [valorNecessario, setValorNecessario] = useState("");
   const [dataFinal, setDataFinal] = useState("");
+  const [dataInicial, setDataInicial] = useState("");
   const [valorAtual, setValorAtual] = useState("");
+  const [orcamentoEdit, setOrcamentoEdit] = useState(null);
 
   // Estado para controlar o modal de confirmação de exclusão
   const [showModal, setShowModal] = useState(false);
@@ -33,77 +31,169 @@ function Orcamento() {
   const [showObjetivoAlcancado, setShowObjetivoAlcancado] = useState(false);
   const [orcamentoAlcancado, setOrcamentoAlcancado] = useState(null);
 
-  // Função para adicionar um novo orçamento
-  const adicionarOrcamento = () => {
-    const novoOrcamento = {
-      nome,
-      valorNecessario: parseFloat(valorNecessario),
-      dataInicial: new Date().toLocaleDateString(),
-      dataFinal,
-      valorAtual: parseFloat(valorAtual),
-    };
-    setOrcamentos([...orcamentos, novoOrcamento]);
+  // Estado para controlar o modal de edição
+  const [showEdit, setShowEdit] = useState(false);
 
-    // Resetar os campos do formulário
-    setNome("");
-    setValorNecessario("");
-    setDataFinal("");
-    setValorAtual("");
+  // Função para carregar os orçamentos do servidor
+  const carregarOrcamentos = async () => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    const userFK = userData.userID;
+    try {
+      const response = await fetch(
+        `https://localhost:7082/api/V1/Orcamentos/${userFK}`
+      );
+      if (!response.ok) {
+        throw new Error("Erro ao carregar os orçamentos");
+      }
+      const data = await response.json();
+      setOrcamentos(data);
+    } catch (error) {
+      console.error("Erro ao carregar os orçamentos:", error);
+    }
+  };
+
+  useEffect(() => {
+    carregarOrcamentos();
+  }, []);
+
+  const adicionarOrcamento = async () => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    const userFK = userData.userID;
+
+    const novoOrcamento = {
+      NomeOrcamento: nome,
+      ValorNecessario: parseFloat(valorNecessario),
+      DataFinal: dataFinal,
+      ValorAtual: parseFloat(valorAtual),
+      DataInicial: dataInicial,
+      UserFK: userFK,
+    };
+
+    try {
+      const response = await fetch("https://localhost:7082/api/V1/Orcamentos", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(novoOrcamento),
+      });
+
+      if (!response.ok) {
+        throw new Error("Erro ao adicionar orçamento");
+      }
+
+      const data = await response.json();
+      console.log("Novo orçamento adicionado:", data);
+
+      // Atualizar a lista de orçamentos exibida na tela
+      setOrcamentos([...orcamentos, data]);
+
+      // Limpar campos do formulário após adicionar
+      setNome("");
+      setValorNecessario("");
+      setDataFinal("");
+      setValorAtual("");
+      setDataInicial("");
+    } catch (error) {
+      console.error("Erro ao adicionar orçamento:", error);
+    }
+  };
+
+  // Função para abrir o modal de edição com os dados do orçamento selecionado
+  const abrirModalEdicao = (orcamento) => {
+    setOrcamentoEdit(orcamento);
+    setNome(orcamento.nomeOrcamento);
+    setValorNecessario(orcamento.valorNecessario);
+    setDataInicial(orcamento.dataInicial);
+    setDataFinal(orcamento.dataFinal);
+    setValorAtual(orcamento.valorAtual);
+    setShowEdit(true);
   };
 
   // Função para editar um orçamento existente
-  const editarOrcamento = (index) => {
-    // Calcular o novo valor atual
-    const novoValorAtual =
-      orcamentos[index].valorAtual + parseFloat(valorAtualEdit);
+  const handleEditarOrcamento = async (e) => {
+    e.preventDefault();
 
-    // Atualizar o valor atual do orçamento selecionado
-    const orcamentosAtualizados = [...orcamentos];
-    orcamentosAtualizados[index].valorAtual = novoValorAtual;
-    setOrcamentos(orcamentosAtualizados);
+    const orcamentoEditado = {
+      OrcamentoID: orcamentoEdit.orcamentoID,
+      NomeOrcamento: nome,
+      ValorNecessario: parseFloat(valorNecessario),
+      DataInicial: dataInicial,
+      DataFinal: dataFinal,
+      ValorAtual: parseFloat(valorAtual),
+    };
 
-    // Verificar se o objetivo foi alcançado
-    if (novoValorAtual >= orcamentosAtualizados[index].valorNecessario) {
-      setOrcamentoAlcancado(orcamentosAtualizados[index]);
-      setShowObjetivoAlcancado(true);
+    try {
+      const response = await fetch(
+        `https://localhost:7082/api/V1/Orcamentos/${orcamentoEdit.orcamentoID}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(orcamentoEditado),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Erro ao editar orçamento");
+      }
+
+      const data = await response.json();
+      console.log("Orçamento editado:", data);
+
+      // Atualizar a lista de orçamentos exibida na tela
+      const orcamentosAtualizados = orcamentos.map((orc) =>
+        orc.orcamentoID === data.orcamentoID ? data : orc
+      );
+      setOrcamentos(orcamentosAtualizados);
+
+      // Fechar o modal de edição
+      setShowEdit(false);
+
+      // Limpar campos do formulário após edição
+      setNome("");
+      setValorNecessario("");
+      setDataFinal("");
+      setValorAtual("");
+      setDataInicial("");
+    } catch (error) {
+      console.error("Erro ao editar orçamento:", error);
     }
-
-    // Parar de editar
-    cancelarEdicao();
   };
 
-  // Função para iniciar a edição de um orçamento
-  const iniciarEdicao = (index) => {
-    setEditandoIndex(index);
-    setValorAtualEdit("");
-  };
+  // Função para excluir o orçamento
+  const confirmarExclusao = async () => {
+    if (orcamentoParaExcluir !== null) {
+      try {
+        const orcamentoId = orcamentos[orcamentoParaExcluir].orcamentoID;
 
-  // Função para cancelar a edição de um orçamento
-  const cancelarEdicao = () => {
-    setEditandoIndex(-1);
-    setValorAtualEdit("");
-  };
+        const response = await fetch(
+          `https://localhost:7082/api/V1/Orcamentos/${orcamentoId}`,
+          {
+            method: "DELETE",
+          }
+        );
 
-  // Função para abrir o modal de confirmação de exclusão
-  const handleShowModal = (index) => {
-    setOrcamentoParaExcluir(index);
-    setShowModal(true);
+        if (!response.ok) {
+          throw new Error("Erro ao excluir orçamento");
+        }
+
+        const orcamentosAtualizados = orcamentos.filter(
+          (_, index) => index !== orcamentoParaExcluir
+        );
+        setOrcamentos(orcamentosAtualizados);
+        setShowModal(false); // Fechar modal após exclusão
+      } catch (error) {
+        console.error("Erro ao excluir orçamento:", error);
+      }
+    }
   };
 
   // Função para fechar o modal de confirmação de exclusão
   const handleCloseModal = () => {
-    setOrcamentoParaExcluir(null);
     setShowModal(false);
-  };
-
-  // Função para confirmar a exclusão do orçamento
-  const confirmarExclusao = () => {
-    if (orcamentoParaExcluir !== null) {
-      const orcamentosAtualizados = [...orcamentos];
-      orcamentosAtualizados.splice(orcamentoParaExcluir, 1);
-      setOrcamentos(orcamentosAtualizados);
-      handleCloseModal();
-    }
+    setOrcamentoParaExcluir(null); // Limpar o estado do orçamento a ser excluído
   };
 
   // Função para fechar o modal de objetivo alcançado
@@ -116,10 +206,12 @@ function Orcamento() {
     <Container>
       <Row className="justify-content-center">
         <Col xs={12} md={10}>
-          <h1 style={{marginBottom:"100px"}} className="text-center">Lista de Orçamentos</h1>
+          <h1 style={{ marginBottom: "100px" }} className="text-center">
+            Lista de Orçamentos
+          </h1>
 
           <div className="mb-4">
-            <h2 style={{marginBottom:"50px"}}>Adicionar Orçamento</h2>
+            <h2 style={{ marginBottom: "50px" }}>Adicionar Orçamento</h2>
             <Form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -127,9 +219,9 @@ function Orcamento() {
               }}
             >
               <Form.Group controlId="formNome">
-                <Form.Label >Nome do Orçamento</Form.Label>
+                <Form.Label>Nome do Orçamento</Form.Label>
                 <Form.Control
-                   style={{marginBottom:"30px"}}
+                  style={{ marginBottom: "30px" }}
                   type="text"
                   placeholder="Digite o nome do orçamento"
                   value={nome}
@@ -139,28 +231,37 @@ function Orcamento() {
               <Form.Group controlId="formValor">
                 <Form.Label>Valor Necessário</Form.Label>
                 <Form.Control
-                  style={{marginBottom:"30px"}}
+                  style={{ marginBottom: "30px" }}
                   type="number"
                   placeholder="Digite o valor necessário"
                   value={valorNecessario}
                   onChange={(e) => setValorNecessario(e.target.value)}
                 />
               </Form.Group>
+              <Form.Group controlId="formDataInicial">
+                <Form.Label>Data Inicial</Form.Label>
+                <Form.Control
+                  style={{ marginBottom: "30px" }}
+                  type="date"
+                  value={dataInicial}
+                  onChange={(e) => setDataInicial(e.target.value)}
+                />
+              </Form.Group>
               <Form.Group controlId="formDataFinal">
                 <Form.Label>Data Final</Form.Label>
                 <Form.Control
-                  style={{marginBottom:"30px"}}
+                  style={{ marginBottom: "30px" }}
                   type="date"
                   value={dataFinal}
                   onChange={(e) => setDataFinal(e.target.value)}
                 />
               </Form.Group>
               <Form.Group controlId="formValorAtual">
-                <Form.Label>Valor de entrada</Form.Label>
+                <Form.Label>Valor Atual</Form.Label>
                 <Form.Control
-                  style={{marginBottom:"30px"}}
+                  style={{ marginBottom: "30px" }}
                   type="number"
-                  placeholder="Digite o valor de entrada"
+                  placeholder="Digite o valor atual"
                   value={valorAtual}
                   onChange={(e) => setValorAtual(e.target.value)}
                 />
@@ -188,57 +289,28 @@ function Orcamento() {
               <tbody>
                 {orcamentos.map((orcamento, index) => (
                   <tr key={index}>
-                    <td>{orcamento.nome}</td>
+                    <td>{orcamento.nomeOrcamento}</td>
                     <td>{orcamento.valorNecessario}</td>
                     <td>{orcamento.dataInicial}</td>
                     <td>{orcamento.dataFinal}</td>
-                    <td>
-                      {editandoIndex === index ? (
-                        <>
-                          <div>Digite a quantia a ser adicionada:</div>
-                          <Form.Control
-                            type="number"
-                            value={valorAtualEdit}
-                            onChange={(e) => setValorAtualEdit(e.target.value)}
-                          />
-                        </>
-                      ) : (
-                        orcamento.valorAtual
-                      )}
-                    </td>
+                    <td>{orcamento.valorAtual}</td>
                     <td>{orcamento.valorNecessario - orcamento.valorAtual}</td>
                     <td>
-                      {editandoIndex === index ? (
-                        <>
-                          <Button
-                            variant="success"
-                            onClick={() => editarOrcamento(index)}
-                          >
-                            Salvar
-                          </Button>{" "}
-                          <Button
-                            variant="secondary"
-                            onClick={cancelarEdicao}
-                          >
-                            Cancelar
-                          </Button>
-                        </>
-                      ) : (
-                        <>
-                          <Button
-                            variant="warning"
-                            onClick={() => iniciarEdicao(index)}
-                          >
-                            Editar
-                          </Button>{" "}
-                          <Button
-                            variant="danger"
-                            onClick={() => handleShowModal(index)}
-                          >
-                            Excluir
-                          </Button>
-                        </>
-                      )}
+                      <Button
+                        variant="warning"
+                        onClick={() => abrirModalEdicao(orcamento)}
+                      >
+                        Editar
+                      </Button>{" "}
+                      <Button
+                        variant="danger"
+                        onClick={() => {
+                          setOrcamentoParaExcluir(index);
+                          setShowModal(true);
+                        }}
+                      >
+                        Excluir
+                      </Button>
                     </td>
                   </tr>
                 ))}
@@ -262,6 +334,63 @@ function Orcamento() {
                 Excluir
               </Button>
             </Modal.Footer>
+          </Modal>
+
+          {/* Modal de edit */}
+          <Modal show={showEdit} onHide={() => setShowEdit(false)}>
+            <Modal.Header closeButton>
+              <Modal.Title>Editar Orçamento</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form onSubmit={handleEditarOrcamento}>
+                <Form.Group controlId="formNome">
+                  <Form.Label>Nome do Orçamento</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Digite o nome do orçamento"
+                    value={nome}
+                    onChange={(e) => setNome(e.target.value)}
+                  />
+                </Form.Group>
+                <Form.Group controlId="formValor">
+                  <Form.Label>Valor Necessário</Form.Label>
+                  <Form.Control
+                    type="number"
+                    placeholder="Digite o valor necessário"
+                    value={valorNecessario}
+                    onChange={(e) => setValorNecessario(e.target.value)}
+                  />
+                </Form.Group>
+                <Form.Group controlId="formDataInicial">
+                  <Form.Label>Data Inicial</Form.Label>
+                  <Form.Control
+                    type="date"
+                    value={dataInicial}
+                    onChange={(e) => setDataInicial(e.target.value)}
+                  />
+                </Form.Group>
+                <Form.Group controlId="formDataFinal">
+                  <Form.Label>Data Final</Form.Label>
+                  <Form.Control
+                    type="date"
+                    value={dataFinal}
+                    onChange={(e) => setDataFinal(e.target.value)}
+                  />
+                </Form.Group>
+                <Form.Group controlId="formValorAtual">
+                  <Form.Label>Valor Atual</Form.Label>
+                  <Form.Control
+                    type="number"
+                    placeholder="Digite o valor atual"
+                    value={valorAtual}
+                    onChange={(e) => setValorAtual(e.target.value)}
+                  />
+                </Form.Group>
+                <Button variant="primary" type="submit">
+                  Salvar Alterações
+                </Button>
+              </Form>
+            </Modal.Body>
           </Modal>
 
           {/* Modal de objetivo alcançado */}

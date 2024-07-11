@@ -4,7 +4,6 @@ import '../assets/css/SignupLogin.css';
 import { useHistory } from "react-router-dom";
 import User from './UserProfile';
 
-
 export const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -12,42 +11,41 @@ export const Login = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const history = useHistory();
     
-
     const handleShowPassword = () => {
         setPassType(passType === 'password' ? 'text' : 'password');
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = fetch('https://localhost:7082/api/V1/LogIn', {
-            body: JSON.stringify({
-                Email: email,
-                Password: password,
-                //UserName:'',
-                RememberMe: false
-            }), 
-                
-            headers: {
-              Accept: "*/*",
-              'Content-Type': "application/json" 
-            },
-            method: "POST",
-            credentials: 'include'
-          })
-          .then((res) => {
-            res.json()
-            console.log('Signup successful');
-            //localstorage to chekc login stats eventually
+        try {
+            const response = await fetch('https://localhost:7082/api/V1/LogIn', {
+                body: JSON.stringify({
+                    Email: email,
+                    Password: password,
+                    RememberMe: false
+                }), 
+                    
+                headers: {
+                    Accept: "*/*",
+                    'Content-Type': "application/json" 
+                },
+                method: "POST",
+                credentials: 'include'
+            });
             
-            localStorage.setItem('user', JSON.stringify(res));
+            if (!response.ok) {
+                throw new Error('Invalid credentials');
+            }
+
+            const data = await response.json();
+            console.log('Login successful');
+            
+            localStorage.setItem('user', JSON.stringify(data));
             history.push('/user/dashboard');
-            return res;})
-        
-          .catch((error) => {
+        } catch (error) {
             console.error('Error during login:', error);
-            throw error;
-          });
-        
+            setErrorMessage('Invalid email or password');
+        }
     };
 
     return (
