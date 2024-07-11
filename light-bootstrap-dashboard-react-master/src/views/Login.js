@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import '../assets/css/SignupLogin.css';
 import { useHistory } from "react-router-dom";
+import User from './UserProfile';
 
 
 export const Login = () => {
@@ -18,20 +19,35 @@ export const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            const response = await axios.post('https://localhost:7082/api/V1/Login', {
+        const response = fetch('https://localhost:7082/api/V1/LogIn', {
+            body: JSON.stringify({
                 Email: email,
-                password: password
-            });
-            if (response.status === 200) {
-                // Redirecionar ou armazenar token
-                console.log('Login successful');
-                history.push('/user/dashboard');
-               
-            }
-        } catch (error) {
-            setErrorMessage('Login failed. Please check your username and password.');
-        }
+                Password: password,
+                //UserName:'',
+                RememberMe: false
+            }), 
+                
+            headers: {
+              Accept: "*/*",
+              'Content-Type': "application/json" 
+            },
+            method: "POST",
+            credentials: 'include'
+          })
+          .then((res) => {
+            res.json()
+            console.log('Signup successful');
+            //localstorage to chekc login stats eventually
+            
+            localStorage.setItem('user', JSON.stringify(res));
+            history.push('/user/dashboard');
+            return res;})
+        
+          .catch((error) => {
+            console.error('Error during login:', error);
+            throw error;
+          });
+        
     };
 
     return (

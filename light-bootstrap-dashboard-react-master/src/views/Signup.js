@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import '../assets/css/SignupLogin.css';
-import { useHistory } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
 
 export const Signup = () => {
-
     const history = useHistory();
-
 
     const [formData, setFormData] = useState({
         firstName: '',
@@ -14,7 +11,8 @@ export const Signup = () => {
         userName: '',
         email: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+        userAutent: ""
     });
 
     const [passType, setPassType] = useState('password');
@@ -45,11 +43,34 @@ export const Signup = () => {
             setErrorMessage("Passwords do not match!");
             return;
         }
-
+    
+        const payload = {
+            UserName: formData.userName,
+            Email: formData.email,
+            Password: formData.password,
+            UserAutent: formData.userAutent,
+        };
+        
         try {
-            const response = await axios.post('https://localhost:7082/api/V1/Register', formData);
-            alert(response.data.message);
-            history.push('/login');
+
+            const response =
+            fetch('https://localhost:7082/api/V1/Register', {  
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json' 
+                },
+                body: JSON.stringify(payload),
+              })
+              .then((res) => {
+                    res.json()
+                    console.log('Signup successful');
+                    history.push('/login');
+                    return res;})
+            
+              .catch((error) => {
+                console.error('Error:', error);
+              });
+    
         } catch (error) {
             setErrorMessage("An error occurred. Please try again.");
         }
@@ -84,7 +105,7 @@ export const Signup = () => {
                         <div className="input-box">
                             <input type={passType} name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} required />
                             <label>Confirm Password</label>
-                            <button type="button" onClick={handleShowPassword} className="btn"> Show Password </button>
+                            <button type="button" onClick={handleShowPassword} className="btn">Show Password</button>
                             {!compare && <span className="error">Passwords do not match!</span>}
                         </div>
                         {errorMessage && <span className="error">{errorMessage}</span>}
