@@ -10,26 +10,8 @@ function User() {
     userAutent: ""
   });
 
-  useEffect(() => {
-    fetchUserData();
-  }, []);
-
-  const fetchUserData = async () => {
-    const userData = JSON.parse(localStorage.getItem("user"));
-    const userFK = userData.userID;
-    try {
-      const response = await fetch(`https://localhost:7082/api/V1/Utilizadores?UserFK=${userFK}`);
-      const data = await response.json();
-      setUser({
-        userName: data.userName,
-        email: data.email,
-        firstName: data.firstName,
-        lastName: data.lastName
-      });
-    } catch (error) {
-      console.error("Erro ao buscar dados do usuário:", error);
-    }
-  };
+ 
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -47,7 +29,7 @@ function User() {
     const userAutent = userData.userAutent;
     
     try {
-      const response = await fetch(`https://localhost:7082/api/V1/Utilizadores?UserFK=${userFK}&oldEmail=${userData.Email}`, {
+      const response = await fetch(`https://localhost:7082/api/V1/Utilizadores?UserFK=${userFK}&oldEmail=${userData.email}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json"
