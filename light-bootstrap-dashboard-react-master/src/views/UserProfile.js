@@ -47,7 +47,7 @@ function User() {
     const userAutent = userData.userAutent;
     
     try {
-      const response = await fetch(`https://localhost:7082/api/V1/Utilizadores?UserFK=${userFK}&oldEmail=${userData.email}`, {
+      const response = await fetch(`https://localhost:7082/api/V1/Utilizadores?UserFK=${userFK}&oldEmail=${userData.Email}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json"
