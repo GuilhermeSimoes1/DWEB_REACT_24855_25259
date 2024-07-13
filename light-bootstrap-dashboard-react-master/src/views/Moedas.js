@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { AccountContext } from '../components/AccountContext/AccountContext.js';
 import Dropdown from 'react-bootstrap/Dropdown';
-import { Container, Row, Col } from 'react-bootstrap';
-import '../assets/css/Moedas.css'
+import { Container, Row, Col, Card } from 'react-bootstrap';
+import '../assets/css/Moedas.css';
 
 function ConversorMoedas() {
     const { getSelectedAccount } = useContext(AccountContext);
@@ -42,35 +42,46 @@ function ConversorMoedas() {
         setResultado(`${accountValue.toFixed(2)} ${moeda} é igual a ${resultadoConversao.toFixed(2)} ${targetMoeda}`);
     };
 
+    const handleSubmit = (event) => {
+        event.preventDefault(); // Previne o comportamento padrão do formulário (recarregar a página)
+        calcularConversao();
+    };
+
     return (
-        <Container className="d-flex justify-content-center align-items-start" style={{ paddingTop: '20px', height: '100vh' }}>
-            <Row>
-                <Col className="text-center">
-                    <h2 style={{ marginBottom: "40px" }}>Conversor de Moedas</h2>
-                    <Dropdown className="custom-dropdown" style={{ marginBottom: "40px" }}>
-                        <Dropdown.Toggle variant="secondary" id="dropdown-basic" className="custom-dropdown-toggle">
-                            {moeda.toUpperCase()}
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            <Dropdown.Item onClick={() => handleChangeMoeda('dolar')}>Dólar</Dropdown.Item>
-                            <Dropdown.Item onClick={() => handleChangeMoeda('euro')}>Euro</Dropdown.Item>
-                            <Dropdown.Item onClick={() => handleChangeMoeda('iene')}>Iene</Dropdown.Item>
-                            <Dropdown.Item onClick={() => handleChangeMoeda('libra')}>Libra</Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
-                    <Dropdown className="custom-dropdown" style={{ marginBottom: "40px" }}>
-                        <Dropdown.Toggle variant="secondary" id="dropdown-basic2" className="custom-dropdown-toggle">
-                            {targetMoeda.toUpperCase()}
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            <Dropdown.Item onClick={() => handleChangeTargetMoeda('dolar')}>Dólar</Dropdown.Item>
-                            <Dropdown.Item onClick={() => handleChangeTargetMoeda('euro')}>Euro</Dropdown.Item>
-                            <Dropdown.Item onClick={() => handleChangeTargetMoeda('iene')}>Iene</Dropdown.Item>
-                            <Dropdown.Item onClick={() => handleChangeTargetMoeda('libra')}>Libra</Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
-                    <button type="button" className="btn btn-outline-secondary" style={{ marginLeft: "10px", width: "100px" }} onClick={calcularConversao}>Convert</button>
-                    {resultado && <p className="text-success fw-bold p-3 rounded shadow-sm" style={{ backgroundColor: "#f8f9fa", marginTop: "35px", fontSize: "20px" }}>{resultado}</p>}
+        <Container fluid>
+            <Row className="justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
+                <Col md={6}>
+                    <Card className="shadow">
+                        <Card.Body>
+                            <h2 className="text-center mb-4">Conversor de Moedas</h2>
+                            <form onSubmit={handleSubmit}>
+                                <Dropdown className="custom-dropdown mb-3">
+                                    <Dropdown.Toggle variant="secondary" id="dropdown-basic" className="custom-dropdown-toggle">
+                                        {moeda.toUpperCase()}
+                                    </Dropdown.Toggle>
+                                    <Dropdown.Menu>
+                                        <Dropdown.Item onClick={() => handleChangeMoeda('dolar')}>Dólar</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => handleChangeMoeda('euro')}>Euro</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => handleChangeMoeda('iene')}>Iene</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => handleChangeMoeda('libra')}>Libra</Dropdown.Item>
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                                <Dropdown className="custom-dropdown mb-3">
+                                    <Dropdown.Toggle variant="secondary" id="dropdown-basic2" className="custom-dropdown-toggle">
+                                        {targetMoeda.toUpperCase()}
+                                    </Dropdown.Toggle>
+                                    <Dropdown.Menu>
+                                        <Dropdown.Item onClick={() => handleChangeTargetMoeda('dolar')}>Dólar</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => handleChangeTargetMoeda('euro')}>Euro</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => handleChangeTargetMoeda('iene')}>Iene</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => handleChangeTargetMoeda('libra')}>Libra</Dropdown.Item>
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                                <button type="submit" className="btn btn-convert w-100">Converter</button>
+                            </form>
+                            {resultado && <p className="result-box text-center mt-3">{resultado}</p>}
+                        </Card.Body>
+                    </Card>
                 </Col>
             </Row>
         </Container>

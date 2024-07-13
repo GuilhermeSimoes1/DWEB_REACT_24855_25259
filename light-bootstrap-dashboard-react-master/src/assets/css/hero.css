@@ -8,20 +8,18 @@
   text-align: center;
   color: #fff; /* Cor do texto */
   position: relative;
+  background-image: url('../../imgs/ola.jpg'); /* Ensure this points to your actual image path */
 }
 
 .hero-content .hero-title-gragas {
   font-family: 'Montserrat', sans-serif;
   font-size: 7rem; /* Aumentei um pouco mais o tamanho */
   font-weight: bold;
-  color: #00aaff; /* Azul mais claro */
+  color: #3a3737; /* Warm orange color */
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
   letter-spacing: 2px;
   text-transform: uppercase;
 }
-
-
-
 
 .hero-content {
   max-width: 600px;
@@ -30,20 +28,16 @@
   z-index: 2;
 }
 
-.hero-section {
-  background-image: url('https://img.freepik.com/vetores-gratis/fundo-de-wireframe-geometrico-abstrato_52683-59421.jpg');
-}
-
 .hero-content h1 {
   font-size: 3rem;
   margin-bottom: 20px;
-  color: black;
+  color: #0e0d0d; /* Golden color */
 }
 
 .hero-content p {
-  font-size: 1.5rem;
+  font-size: 2rem;
   margin-bottom: 30px;
-  color: #666
+  color: #1d1501; /* Goldenrod color */
 }
 
 .hero-buttons {
@@ -55,13 +49,14 @@
 .hero-buttons button {
   padding: 10px 20px;
   font-size: 1.2rem;
-  background-color: #007bff; /* Cor de fundo do botão */
+  background-color: #000000; /* OrangeRed background color */
   color: #fff; /* Cor do texto do botão */
   border: none;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  border-radius: 10px;
 }
 
 .hero-buttons button:hover {
-  background-color: #0056b3; /* Cor de fundo do botão ao passar o mouse */
+  background-color: #f06b53; /* Tomato color on hover */
 }

@@ -21,7 +21,8 @@ import Moeda from "views/Moedas.js";
 import Historico from "views/Historico.js"
 import Orcamento from "views/Orcamento.js";
 import Contas from "views/Contas.js";
-import Informacoes from "views/Informacoes.js"
+import Informacoes from "views/Informacoes.js";
+import TransacoesCategorias from "views/TransacoesCategorias.js"
 
 
 //os icons são do now ui icons
@@ -73,6 +74,13 @@ const dashboardRoutes = [
     component: Contas,
     layout: "/user"
   },
+  {
+    path: "/transcat",
+    name: "N-M",
+    icon: "nc-icon nc-tag-content",
+    component: TransacoesCategorias,
+    layout: "/user"
+  }
 
 ];
 

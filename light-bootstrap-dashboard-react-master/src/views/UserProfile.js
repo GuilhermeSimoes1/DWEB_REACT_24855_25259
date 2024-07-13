@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button, Card, Form, Container, Row, Col } from "react-bootstrap";
+import "../assets/css/user.css";
 
 const url = "https://dwebnet20240712221837.azurewebsites.net/api/v1";
 
@@ -81,17 +82,17 @@ function User() {
   return (
     <Container fluid>
       <Row>
-        <Col md="8">
+        <Col md="11">
           <Card>
             <Card.Header>
-              <Card.Title as="h4">Edit Profile</Card.Title>
+              <Card.Title as="h4">Editar Perfil</Card.Title>
             </Card.Header>
             <Card.Body>
               <Form onSubmit={handleSubmit}>
                 <Row>
                   <Col className="px-1" md="6">
                     <Form.Group>
-                      <Form.Label>Username</Form.Label>
+                      <strong><label>Nome de Utilizador</label></strong>
                       <Form.Control
                         name="userName"
                         value={user.userName}
@@ -102,7 +103,7 @@ function User() {
                   </Col>
                   <Col className="px-1" md="6">
                     <Form.Group>
-                      <Form.Label>Email address</Form.Label>
+                      <Form.Label>Email</Form.Label>
                       <Form.Control
                         name="email"
                         value={user.email}
@@ -115,7 +116,7 @@ function User() {
                 <Row>
                   <Col className="pr-1" md="6">
                     <Form.Group>
-                      <Form.Label>First Name</Form.Label>
+                      <Form.Label>Nome</Form.Label>
                       <Form.Control
                         name="firstName"
                         value={user.firstName}
@@ -126,7 +127,7 @@ function User() {
                   </Col>
                   <Col className="pl-1" md="6">
                     <Form.Group>
-                      <Form.Label>Last Name</Form.Label>
+                      <Form.Label>Apelido</Form.Label>
                       <Form.Control
                         name="lastName"
                         value={user.lastName}
@@ -136,7 +137,7 @@ function User() {
                     </Form.Group>
                   </Col>
                 </Row>
-                <Button className="btn-fill pull-right" type="submit" variant="info">
+                <Button className="btn-fix" type="submit" variant="info">
                   Update Profile
                 </Button>
                 <div className="clearfix" />

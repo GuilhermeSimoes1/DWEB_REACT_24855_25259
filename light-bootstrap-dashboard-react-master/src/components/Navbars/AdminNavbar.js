@@ -9,7 +9,7 @@ import { Link } from "react-router-dom"; // Importe corretamente o Link
 function Header() {
   const location = useLocation();
   const userData = JSON.parse(localStorage.getItem("user"));
-  const userName = userData ? userData.userName : "Guest";
+  const userName = userData.email;
 
   const getBrandText = () => {
     for (let i = 0; i < routes.length; i++) {
@@ -31,11 +31,15 @@ function Header() {
           <Nav.Link as={Link} to="/user/historico">Histórico</Nav.Link>
           <Nav.Link as={Link} to="/user/contas">Contas</Nav.Link>
           <Nav.Link as={Link} to="/user/profile">Utilizadores</Nav.Link>
+          <Nav.Link as={Link} to="/user/transcat">N-M</Nav.Link>
         </Nav>
         <Nav className="ms-auto">
           <Nav.Item className="nav-link">
             Hello, {userName}
           </Nav.Item>
+          <Nav.Link as={Link} className="nav-link" to = "/">
+            Logout
+          </Nav.Link>
         </Nav>
       </Navbar.Collapse>
     </Navbar>

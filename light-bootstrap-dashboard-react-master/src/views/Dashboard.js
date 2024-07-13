@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Button, Card, Container, Row, Col, Form } from "react-bootstrap";
-import "../doughnut/Doughnut.css";
 import "../assets/css/Dashboard.css";
 
 const url = "https://dwebnet20240712221837.azurewebsites.net/api/v1";
@@ -14,7 +13,6 @@ function Dashboard() {
   const [categoryValues, setCategoryValues] = useState({});
   const [descricao, setDescricao] = useState("");
   const [transactionType, setTransactionType] = useState("");
-  const [transactionHistory, setTransactionHistory] = useState([]);
   const [selectedAccount, setSelectedAccount] = useState(null);
 
   const [categoriasPorTipo, setCategoriasPorTipo] = useState({});
@@ -167,29 +165,10 @@ function Dashboard() {
       });
   };
 
-
   return (
-    <Container fluid>
+    <Container fluid className="dashboard-container">
       <Row>
         <Col lg="3" sm="6">
-          <Form.Group controlId="formAccountSelect">
-            <Form.Label>Selecionar Conta</Form.Label>
-            <Form.Control
-              as="select"
-              style={{ marginBottom: "40px" }}
-              value={selectedAccountId || ""}
-              onChange={(e) => setSelectedAccountId(e.target.value)}
-            >
-              <option value="" disabled>
-                Selecione uma conta
-              </option>
-              {accounts.map((account) => (
-                <option key={account.contaID} value={account.contaID}>
-                  {account.nomeConta}
-                </option>
-              ))}
-            </Form.Control>
-          </Form.Group>
           <Card className="card-stats">
             <Card.Body>
               <Row>
@@ -212,19 +191,27 @@ function Dashboard() {
                 </Col>
               </Row>
             </Card.Body>
-            <Card.Footer>
-              <hr />
-              <div className="stats">
-                <i className="far fa-calendar-alt mr-1"></i>
-                Last day
-              </div>
-            </Card.Footer>
           </Card>
         </Col>
-      </Row>
-      <Row>
-        <Col>
-          <Form>
+        <Col lg="9" sm="6">
+          <Form className="transaction-form" style={{marginTop:"250px"}}>
+            <Form.Group controlId="formAccountSelect">
+              <Form.Label>Selecionar Conta</Form.Label>
+              <Form.Control
+                as="select"
+                value={selectedAccountId || ""}
+                onChange={(e) => setSelectedAccountId(e.target.value)}
+              >
+                <option value="" disabled>
+                  Selecione uma conta
+                </option>
+                {accounts.map((account) => (
+                  <option key={account.contaID} value={account.contaID}>
+                    {account.nomeConta}
+                  </option>
+                ))}
+              </Form.Control>
+            </Form.Group>
             <Form.Group controlId="formValor">
               <Form.Label>Valor</Form.Label>
               <Form.Control
@@ -232,21 +219,19 @@ function Dashboard() {
                 value={inputValue}
                 onChange={handleInputChange}
                 placeholder="Digite o valor"
-                className="input mt-2"
               />
             </Form.Group>
             <Button variant="success" onClick={() => setShowForm(!showForm)}>
               {showForm ? "-" : "+"}
             </Button>
             {showForm && (
-              <div className="form show">
+              <div>
                 <Form.Group controlId="formTransactionType">
                   <Form.Label>Tipo de Transação</Form.Label>
                   <Form.Control
                     as="select"
                     value={transactionType}
                     onChange={handleTransactionTypeChange}
-                    className="input mt-2"
                   >
                     <option value="">Selecione o tipo de transação</option>
                     <option value="ganho">Ganho</option>
@@ -259,7 +244,7 @@ function Dashboard() {
                       ? categoriasPorTipo.Ganho
                       : categoriasPorTipo.Gasto
                     ).map((catId) => (
-                      <Form.Group controlId={`formCategory-${catId}`} key={catId}>
+                      <Form.Group key={catId}>
                         <Form.Check
                           type="checkbox"
                           id={`checkbox-${catId}`}
@@ -267,7 +252,6 @@ function Dashboard() {
                           checked={selectedCategories.includes(catId.toString())}
                           onChange={handleCategoryChange}
                           label={categoriaNomes[catId.toString()]}
-                          className="input mt-2"
                         />
                         {selectedCategories.includes(catId.toString()) && (
                           <Form.Control
@@ -277,7 +261,6 @@ function Dashboard() {
                               handleCategoryValueChange(catId.toString(), e.target.value)
                             }
                             placeholder="Digite o valor necessário"
-                            className="input mt-2"
                           />
                         )}
                       </Form.Group>
@@ -290,13 +273,12 @@ function Dashboard() {
                     type="text"
                     value={descricao}
                     onChange={handleDescricaoChange}
-                    className="input descricao-input"
                     placeholder="Descrição"
                   />
                 </Form.Group>
-                <Button variant="outline-success" onClick={handleConfirm}>
+                <button className="btn-fix" onClick={handleConfirm}>
                   Confirmar
-                </Button>
+                </button>
               </div>
             )}
           </Form>

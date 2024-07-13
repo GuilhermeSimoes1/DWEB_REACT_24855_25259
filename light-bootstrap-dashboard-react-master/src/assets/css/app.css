@@ -1,0 +1,29 @@
+.navbar {
+    background-color: #ffffff; /* Cor de fundo da Navbar */
+    border-bottom: 1px solid #dddddd; /* Borda inferior */
+    padding: 10px 20px; /* Espaçamento interno */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra */
+  }
+  
+ 
+  
+  .navbar-nav .nav-link {
+    color: #333333; /* Cor do texto dos links */
+    font-size: 1rem; /* Tamanho da fonte dos links */
+    font-weight: 500; /* Peso da fonte dos links */
+    margin-right: 10px; /* Espaçamento à direita entre os links */
+    transition: color 0.3s ease; /* Transição suave da cor ao passar o mouse */
+  }
+  
+  .navbar-nav .nav-link:hover {
+    color: #007bff; /* Cor do texto dos links ao passar o mouse */
+  }
+  
+  .navbar-text {
+    font-size: 1rem; /* Tamanho da fonte do texto no canto direito */
+    font-weight: 500; /* Peso da fonte do texto no canto direito */
+  }
+  
+  .navbar-collapse {
+    justify-content: flex-end; /* Alinhar itens à direita */
+  }
