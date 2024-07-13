@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import '../assets/css/SignupLogin.css';
 import { useHistory } from "react-router-dom";
-import User from './UserProfile';
+
+const url = "https://dwebnet20240712221837.azurewebsites.net/api/v1";
 
 export const Login = () => {
     const [email, setEmail] = useState('');
@@ -17,35 +17,31 @@ export const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            const response = await fetch('https://localhost:7082/api/V1/LogIn', {
-                body: JSON.stringify({
-                    Email: email,
-                    Password: password,
-                    RememberMe: false
-                }), 
-                    
-                headers: {
-                    Accept: "*/*",
-                    'Content-Type': "application/json" 
-                },
-                method: "POST",
-                credentials: 'include'
-            });
-            
-            if (!response.ok) {
-                throw new Error('Invalid credentials');
-            }
 
-            const data = await response.json();
-            console.log('Login successful');
-            
-            localStorage.setItem('user', JSON.stringify(data));
-            history.push('/user/dashboard');
-        } catch (error) {
+        fetch(`${url}/Login?${new URLSearchParams({
+            Email: email,
+            Password: password,
+            remainder: false
+          })}`, {
+            headers: {
+              Accept: "*/*"
+            },
+            method: "POST",
+            credentials: 'include'
+          })
+          .then((res) => res.json())
+          .then((data) => {
+
+            console.log(data) 
+            localStorage.setItem("user", JSON.stringify(data))
+            history.push('/user/Dashboard');
+           
+
+          })
+          .catch((error) => {
             console.error('Error during login:', error);
-            setErrorMessage('Invalid email or password');
-        }
+            throw error;
+          });
     };
 
     return (

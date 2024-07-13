@@ -8,8 +8,11 @@ import {
   Button,
   Modal,
 } from "react-bootstrap";
+
 import "../assets/css/Orcamento.css";
 import User from "./UserProfile";
+
+const url = "https://dwebnet20240712221837.azurewebsites.net/api/v1";
 
 function Orcamento() {
   // Estado para armazenar a lista de orçamentos
@@ -40,7 +43,7 @@ function Orcamento() {
     const userFK = userData.userID;
     try {
       const response = await fetch(
-        `https://localhost:7082/api/V1/Orcamentos/${userFK}`
+        `${url}/Orcamentos/${userFK}`
       );
       if (!response.ok) {
         throw new Error("Erro ao carregar os orçamentos");
@@ -70,7 +73,7 @@ function Orcamento() {
     };
 
     try {
-      const response = await fetch("https://localhost:7082/api/V1/Orcamentos", {
+      const response = await fetch(`${url}/Orcamentos`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -125,7 +128,7 @@ function Orcamento() {
 
     try {
       const response = await fetch(
-        `https://localhost:7082/api/V1/Orcamentos/${orcamentoEdit.orcamentoID}`,
+        `${url}/Orcamentos/${orcamentoEdit.orcamentoID}`,
         {
           method: "PUT",
           headers: {
@@ -169,7 +172,7 @@ function Orcamento() {
         const orcamentoId = orcamentos[orcamentoParaExcluir].orcamentoID;
 
         const response = await fetch(
-          `https://localhost:7082/api/V1/Orcamentos/${orcamentoId}`,
+          `${url}/Orcamentos/${orcamentoId}`,
           {
             method: "DELETE",
           }

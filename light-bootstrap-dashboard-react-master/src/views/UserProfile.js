@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Button, Card, Form, Container, Row, Col } from "react-bootstrap";
 
+const url = "https://dwebnet20240712221837.azurewebsites.net/api/v1";
+
 function User() {
   const [user, setUser] = useState({
     userName: "",
@@ -10,8 +12,18 @@ function User() {
     userAutent: ""
   });
 
- 
-  
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (userData) {
+      setUser({
+        userName: userData.userName,
+        email: userData.email,
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        userAutent: userData.userAutent
+      });
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,12 +36,16 @@ function User() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const userData = JSON.parse(localStorage.getItem("user"));
+    if (!userData) {
+      alert("User data not found in local storage.");
+      return;
+    }
+
     const userFK = userData.userID;
-    const useremail = userData.email;
-    const userAutent = userData.userAutent;
+    const oldEmail = userData.email;
     
     try {
-      const response = await fetch(`https://localhost:7082/api/V1/Utilizadores?UserFK=${userFK}&oldEmail=${userData.email}`, {
+      const response = await fetch(`${url}/Utilizadores?UserFK=${userFK}&oldEmail=${oldEmail}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json"
@@ -39,20 +55,26 @@ function User() {
           Email: user.email,
           FirstName: user.firstName,
           LastName: user.lastName,
-          UserAutent: userAutent
+          UserAutent: user.userAutent
         })
       });
-  
+
       if (response.ok) {
-        alert("Perfil atualizado com sucesso!");
+        alert("Profile updated successfully!");
+        localStorage.setItem("user", JSON.stringify({
+          userName: user.userName,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          userAutent: user.userAutent,
+          userID: userFK
+        }));
       } else {
-        const errorData = await response.json(); // Captura detalhes do erro se disponíveis
-        console.error("Erro ao atualizar perfil:", errorData);
-        alert("Erro ao atualizar perfil. Verifique o console para mais detalhes.");
+        const errorData = await response.json();
+        alert("Error updating profile. Check the console for more details.");
       }
     } catch (error) {
-      console.error("Erro ao atualizar perfil:", error);
-      alert("Erro ao atualizar perfil. Verifique o console para mais detalhes.");
+      alert("Error updating profile. Check the console for more details.");
     }
   };
 

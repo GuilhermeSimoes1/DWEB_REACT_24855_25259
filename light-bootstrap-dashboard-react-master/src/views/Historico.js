@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Table } from "react-bootstrap";
 
+
+const url = "https://dwebnet20240712221837.azurewebsites.net/api/v1";
+
 function Historico() {
   const [transactionHistory, setTransactionHistory] = useState([]);
   const userData = JSON.parse(localStorage.getItem("user"));
   const userId = userData.userID;
 
+
   useEffect(() => {
-    fetch(`https://localhost:7082/api/V1/GetHistoricoTransacoes?userId=${userId}`)
+    fetch(`${url}/GetHistoricoTransacoes?userId=${userId}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Erro ao buscar histórico de transações");
@@ -26,7 +30,6 @@ function Historico() {
   const mapTipoTransacao = (tipoTransacao) => {
     return tipoTransacao === 0 ? "Ganho" : "Gasto";
   };
-
 
   return (
     <Container fluid>

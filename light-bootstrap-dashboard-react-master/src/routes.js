@@ -42,6 +42,7 @@ const dashboardRoutes = [
     component: UserProfile,
     layout: "/user"
   },
+
   {
     path: "/moeda",
     name: "Moeda",
@@ -56,7 +57,7 @@ const dashboardRoutes = [
     component: Historico,
     layout: "/user"
   },
- 
+
   {
     path: "/orcamento",
     name: "Orçamentos",
@@ -72,9 +73,6 @@ const dashboardRoutes = [
     component: Contas,
     layout: "/user"
   },
-
-
-
 
 ];
 

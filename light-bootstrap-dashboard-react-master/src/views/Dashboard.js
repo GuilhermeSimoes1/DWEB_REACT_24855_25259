@@ -3,6 +3,8 @@ import { Button, Card, Container, Row, Col, Form } from "react-bootstrap";
 import "../doughnut/Doughnut.css";
 import "../assets/css/Dashboard.css";
 
+const url = "https://dwebnet20240712221837.azurewebsites.net/api/v1";
+
 function Dashboard() {
   const [accounts, setAccounts] = useState([]);
   const [selectedAccountId, setSelectedAccountId] = useState();
@@ -30,7 +32,7 @@ function Dashboard() {
         const userId = userData.userID;
 
         const response = await fetch(
-          `https://localhost:7082/api/V1/GetUserAccounts?userId=${userId}`
+          `${url}/GetUserAccounts?userId=${userId}`
         );
         if (!response.ok) {
           throw new Error(`Erro ao obter contas: ${response.status}`);
@@ -47,7 +49,7 @@ function Dashboard() {
   }, []);
 
   useEffect(() => {
-    fetch("https://localhost:7082/api/V1/GetCategorias")
+    fetch(`${url}/GetCategorias`)
       .then((response) => response.json())
       .then((data) => {
         setCategoriasPorTipo(data.categoriasPorTipo);
@@ -139,7 +141,7 @@ function Dashboard() {
       }))
     };
     
-    fetch(`https://localhost:7082/api/V1/CreateTransacao`, {
+    fetch(`${url}/CreateTransacao`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -154,7 +156,6 @@ function Dashboard() {
       })
       .then((data) => {
         console.log("Transação criada com sucesso:", data.message);
-        // Limpeza de estados após transação bem sucedida
         setInputValue(0);
         setSelectedCategories([]);
         setCategoryValues({});

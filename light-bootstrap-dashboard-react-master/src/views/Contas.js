@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Table, Button, Form, Modal } from 'react-bootstrap';
 
+const url = "https://dwebnet20240712221837.azurewebsites.net/api/v1";
+
 function Contas() {
     const [accounts, setAccounts] = useState([]);
     const [selectedAccountId, setSelectedAccountId] = useState(null);
@@ -19,7 +21,7 @@ function Contas() {
     const fetchAccounts = () => {
         const userData = JSON.parse(localStorage.getItem('user'));
         const userFK = userData.userID;
-        fetch(`https://localhost:7082/api/V1/Contas?userFK=${userFK}`)
+        fetch(`${url}/Contas?userFK=${userFK}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Erro ao buscar contas');
@@ -50,7 +52,7 @@ function Contas() {
             Saldo: parseFloat(initialAccountValue)
         };
     
-        fetch(`https://localhost:7082/api/V1/Contas?UserFK=${userFK}&OldEmail=${oldEmail}`, {
+        fetch(`${url}/Contas?UserFK=${userFK}&OldEmail=${oldEmail}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -76,7 +78,7 @@ function Contas() {
     
 
     const updateAccount = () => {
-        fetch(`https://localhost:7082/api/V1/Contas/${editAccount.contaID}`, {
+        fetch(`${url}/Contas/${editAccount.contaID}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -102,7 +104,7 @@ function Contas() {
     };
 
     const deleteAccount = () => {
-        fetch(`https://localhost:7082/api/V1/Contas/${accountToDelete.contaID}`, {
+        fetch(`${url}/Contas/${accountToDelete.contaID}`, {
             method: 'DELETE',
         })
             .then(response => {
