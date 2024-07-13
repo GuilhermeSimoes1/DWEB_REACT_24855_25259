@@ -2,22 +2,22 @@
     border: 0;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin: auto; /* Centraliza horizontalmente */
-    max-width: 600px; /* Define uma largura máxima */
-    background-color: #fff; /* Cor de fundo do card */
-    color: #333333; /* Cor do texto dentro do card */
+    margin: auto; 
+    max-width: 600px; 
+    background-color: #fff; 
+    color: #333333; 
   }
   
   .card-header {
     background-color: #f0f0f0;
     border-bottom: 1px solid #dddddd;
-    color: #333333; /* Cor do texto do cabeçalho */
+    color: #333333; 
   }
   
   .card-title {
     font-weight: 600;
     font-size: 1.5rem;
-    color: #333333; /* Cor do título do card */
+    color: #333333; 
   }
   
   .card-body {
@@ -30,7 +30,7 @@
   
   .form-label {
     font-weight: 500;
-    color: #555555;
+    color: #000;
   }
   
   .form-control {
@@ -42,8 +42,8 @@
   .btn-fix {
     padding: 10px 20px;
     font-size: 1.2rem;
-    background-color: #000000; /* OrangeRed background color */
-    color: #fff; /* Cor do texto do botão */
+    background-color: #000000; 
+    color: #fff; 
     border: none;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -53,7 +53,7 @@
   }
   
   .btn-fix:hover {
-    background-color: #f06b53; /* Tomato color on hover */
+    background-color: #f06b53; 
     color: #fff;
   }
   
@@ -67,10 +67,10 @@
     display: table;
   }
   
-  /* Centraliza o card verticalmente */
+ 
   .container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* Utiliza toda a altura da viewport */
+    height: 100vh; 
   }

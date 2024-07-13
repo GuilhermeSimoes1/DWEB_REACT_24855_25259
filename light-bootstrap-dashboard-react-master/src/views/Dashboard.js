@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Button, Card, Container, Row, Col, Form } from "react-bootstrap";
-import "../assets/css/Dashboard.css";
+import "../assets/css/Dashboard.css"; 
 
-const url = "https://dwebnet20240712221837.azurewebsites.net/api/v1";
+const url = "https://dwebnet20240712221837.azurewebsites.net/api/v1"; // URL 
 
 function Dashboard() {
+  // Estados para armazenar dados relacionados às contas, transações
   const [accounts, setAccounts] = useState([]);
   const [selectedAccountId, setSelectedAccountId] = useState();
   const [inputValue, setInputValue] = useState(0);
@@ -15,9 +16,11 @@ function Dashboard() {
   const [transactionType, setTransactionType] = useState("");
   const [selectedAccount, setSelectedAccount] = useState(null);
 
+  // Estados para categorias por tipo e nomes de categoria
   const [categoriasPorTipo, setCategoriasPorTipo] = useState({});
   const [categoriaNomes, setCategoriaNomes] = useState({});
 
+  // Efeito para ir buscar contas do utilizador ao carregar a página
   useEffect(() => {
     const fetchAccounts = async () => {
       try {
@@ -46,6 +49,7 @@ function Dashboard() {
     fetchAccounts();
   }, []);
 
+  // Efeito para ir buscar categorias ao carregar a página
   useEffect(() => {
     fetch(`${url}/GetCategorias`)
       .then((response) => response.json())
@@ -56,6 +60,7 @@ function Dashboard() {
       .catch((error) => console.error("Erro ao buscar categorias:", error));
   }, []);
 
+  // Efeito para atualizar a conta selecionada quando o ID da conta muda
   useEffect(() => {
     if (selectedAccountId) {
       const account = accounts.find(
@@ -67,20 +72,24 @@ function Dashboard() {
     }
   }, [selectedAccountId, accounts]);
 
+  // Função para lidar com a mudança de valor de entrada
   const handleInputChange = (event) => {
     setInputValue(Number(event.target.value));
   };
 
+  // Função para lidar com a mudança de tipo de transação
   const handleTransactionTypeChange = (event) => {
     setTransactionType(event.target.value);
     setSelectedCategories([]);
     setCategoryValues({});
   };
 
+  // Função para lidar com a mudança na descrição da transação
   const handleDescricaoChange = (event) => {
     setDescricao(event.target.value);
   };
 
+  // Função para lidar com a mudança na seleção de categorias
   const handleCategoryChange = (event) => {
     const value = event.target.value;
     setSelectedCategories((prevSelectedCategories) =>
@@ -94,6 +103,7 @@ function Dashboard() {
     }));
   };
 
+  // Função para lidar com a mudança no valor de uma categoria específica
   const handleCategoryValueChange = (category, value) => {
     setCategoryValues((prevValues) => ({
       ...prevValues,
@@ -101,6 +111,7 @@ function Dashboard() {
     }));
   };
 
+  // Função para confirmar e criar a transação
   const handleConfirm = () => {
     const totalCategoryValue = Object.values(categoryValues).reduce(
       (a, b) => a + Number(b),
@@ -165,6 +176,7 @@ function Dashboard() {
       });
   };
 
+  // Renderização do componente do dashboard do utilizador
   return (
     <Container fluid className="dashboard-container">
       <Row>

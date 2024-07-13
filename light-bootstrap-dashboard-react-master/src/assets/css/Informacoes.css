@@ -1,40 +1,85 @@
-.informacoes-container {
-    padding: 20px;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-.informacoes h2 {
-    margin-bottom: 40px;
-    text-align: center;
-    font-size: 2rem;
+.juro {
+  background-image: url('../../imgs/img2.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  font-family: 'Montserrat', sans-serif;
+  min-height: 100vh; /* Garante que ocupa a altura total da tela */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-  }
-  
-.informacoes p {
-    margin-bottom: 20px;
-    font-size: 1rem;
-    line-height: 1.5;
-  }
-  
-.informacoes  ul {
-    margin-bottom: 40px;
-    padding-left: 20px;
-  }
-  
-.informacoes li {
-    margin-bottom: 10px;
-    font-size: 1rem;
-    line-height: 1.5;
-  }
-  
-.informacoes  a {
-    color: #007bff;
-    text-decoration: none;
-  }
-  
+.informacoes-container {
+  background-color: rgba(255, 255, 255, 0.9); /* Fundo branco com transparência */
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 600px;
+  margin: auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  color: #3a3737; /* Cor do texto */
+}
+
+.informacoes {
+  color: #333; /* Cor de texto escura para melhor legibilidade */
+}
+
+.back-arrow {
+  display: inline-block;
+  margin-bottom: 20px;
+  color: #0056b3; 
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.back-arrow:hover {
+  text-decoration: underline;
+}
+
+.informacoes h2 {
+  text-align: center;
+  color: #050505; 
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.informacoes p, ul {
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+  color: #333; 
+}
+
+.informacoes ul {
+  padding-left: 20px; 
+}
+
+.informacoes ul li {
+  margin-bottom: 5px;
+}
+
+.informacoes a {
+  color: #0400fa; 
+  text-decoration: none;
+}
+
 .informacoes a:hover {
-    text-decoration: underline;
-  }
-  
+  text-decoration: none;
+}
+
+
+.btna {
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  background-color: #000000; 
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border-radius: 10px;
+  width: 100%;
+}
+
+.btna:hover {
+  background-color: #f06b53; 
+  color: #fff;
+}

@@ -1,0 +1,25 @@
+.table th,
+.table td {
+    vertical-align: middle;
+    text-align: center;
+    font-size: 1rem;
+}
+
+.table th {
+    background-color: #343a40; /* Cor de fundo do cabeçalho da tabela */
+    color: #fff; /* Cor do texto no cabeçalho da tabela */
+  }
+
+  .table table tbody tr:hover {
+    background-color: #e9ecef; 
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 30px;
+    
+  }
+  
+  .table {
+    margin-top: 20px;
+  }

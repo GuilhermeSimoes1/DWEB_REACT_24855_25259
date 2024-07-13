@@ -1,0 +1,16 @@
+.btn-add {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    background-color: #000000; /* OrangeRed background color */
+    color: #fff; /* Cor do texto do botão */
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: 10px;
+    margin-top: 20px;
+  }
+  
+  .btn-add:hover {
+    background-color: #f06b53;
+    color:#fff; 
+  }

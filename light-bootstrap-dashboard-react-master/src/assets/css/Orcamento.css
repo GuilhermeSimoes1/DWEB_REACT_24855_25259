@@ -15,5 +15,25 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
   
-  /* Estilos adicionais para os formulários e tabelas podem ser adicionados aqui */
+  .modal-content {
+    background-color: #f8f9fa; /* Cor de fundo do modal */
+    color: #000; /* Cor do texto */
+  }
+  
+  .modal-header {
+    color: #000; /* Cor do texto do cabeçalho */
+    border-bottom: none; /* Remove a borda inferior */
+  }
+  
+  .modal-body {
+    padding: 20px;
+  }
+  
+  .modal-footer {
+    background-color: #f8f9fa; /* Cor de fundo do rodapé */
+    border-top: none; /* Remove a borda superior */
+  }
+  
+  
+
   

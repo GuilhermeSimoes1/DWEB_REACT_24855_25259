@@ -1,37 +1,44 @@
 import React, { useEffect, useState } from 'react';
-import "../assets/css/modals.css";
+import "../assets/css/modals.css"; // Importa estilos CSS para os modais
+import "../assets/css/transacoescategorias.css"; // Importa estilos CSS específicos para transações e categorias
+
+const url = "https://dwebnet20240712221837.azurewebsites.net/api/v1"; 
 
 const TransactionsCategories = () => {
-    const [data, setData] = useState([]);
-    const [selectedItem, setSelectedItem] = useState(null);
-    const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
-    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const [formValues, setFormValues] = useState({
+    // Estados para armazenar os dados da API, item selecionado, estado dos modais e valores do formulário
+    const [data, setData] = useState([]); // Estado para armazenar os dados das transações e categorias
+    const [selectedItem, setSelectedItem] = useState(null); // Estado para o item selecionado
+    const [isDetailModalOpen, setIsDetailModalOpen] = useState(false); // Estado para controlar a abertura do modal de detalhes
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false); // Estado para controlar a abertura do modal de edição
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // Estado para controlar a abertura do modal de exclusão
+    const [formValues, setFormValues] = useState({ // Estado para armazenar os valores do formulário de edição
         transacaoFK: '',
         categoriaFK: '',
         valor: '',
         descricao: '' 
     });
 
+    // Efeito para buscar os dados das transações e categorias da API ao carregar o componente
     useEffect(() => {
-        fetch(`https://localhost:7082/api/V1/GetTransacoesCategorias`)
+        fetch(`${url}/GetTransacoesCategorias`)
             .then(response => response.json())
             .then(data => {
                 if (Array.isArray(data)) {
                     setData(data);
                 } else {
-                    console.error('Fetch returned non-array data:', data);
+                    console.error('Fetch retornou dados que não são de um array:', data);
                 }
             })
-            .catch(error => console.error('Fetch error:', error));
+            .catch(error => console.error('Erro ao buscar dados:', error));
     }, []);
 
+    // Função para lidar com o clique no botão de detalhes de um item
     const handleDetailClick = (item) => {
         setSelectedItem(item);
         setIsDetailModalOpen(true);
     };
 
+    // Função para lidar com o clique no botão de edição de um item
     const handleEditClick = (item) => {
         setSelectedItem(item);
         setFormValues({
@@ -43,13 +50,15 @@ const TransactionsCategories = () => {
         setIsEditModalOpen(true);
     };
 
+    // Função para lidar com o clique no botão de exclusão de um item
     const handleDeleteClick = (item) => {
         setSelectedItem(item);
         setIsDeleteModalOpen(true);
     };
 
+    // Função para confirmar a exclusão de um item após clicar no botão "Apagar" no modal
     const handleDeleteConfirmed = () => {
-        fetch(`https://localhost:7082/api/V1/DeleteTransCat/${selectedItem.transacao.id}/${selectedItem.categoria.id}`, {
+        fetch(`${url}/DeleteTransCat/${selectedItem.transacao.id}/${selectedItem.categoria.id}`, {
             method: 'DELETE',
         })
         .then(response => {
@@ -58,12 +67,13 @@ const TransactionsCategories = () => {
                 setData(updatedData);
                 setIsDeleteModalOpen(false);
             } else {
-                throw new Error('Delete request failed');
+                throw new Error('Falha na requisição de exclusão');
             }
         })
-        .catch(error => console.error('Delete error:', error));
+        .catch(error => console.error('Erro ao excluir:', error));
     };
 
+    // Função para lidar com a submissão do formulário de edição
     const handleEditSubmit = (e) => {
         e.preventDefault();
 
@@ -74,9 +84,7 @@ const TransactionsCategories = () => {
             descricao: formValues.descricao 
         };
 
-        console.log('Edit submit requestBody:', requestBody);
-
-        fetch(`https://localhost:7082/api/V1/EditTransCat/${selectedItem.transacao.id}`, {
+        fetch(`${url}/EditTransCat/${selectedItem.transacao.id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -92,7 +100,7 @@ const TransactionsCategories = () => {
                             valor: formValues.valor,
                             transacao: {
                                 ...item.transacao,
-                                descricao: formValues.descricao // Atualize a descrição
+                                descricao: formValues.descricao // Atualiza a descrição da transação
                             }
                         };
                     }
@@ -102,14 +110,15 @@ const TransactionsCategories = () => {
                 setData(updatedData);
                 setIsEditModalOpen(false);
             } else {
-                throw new Error('Edit request failed');
+                throw new Error('Falha na requisição de edição');
             }
         })
         .catch(error => {
-            console.error('Edit error:', error);
+            console.error('Erro na edição:', error);
         });
     };
 
+    // Função para lidar com as mudanças nos inputs do formulário de edição
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormValues(prevState => ({
@@ -118,10 +127,12 @@ const TransactionsCategories = () => {
         }));
     };
 
+    // Renderização do componente de transações e categorias
     return (
         <div>
             <h2>Lista de Transações e Categorias</h2>
 
+            {/* Tabela para exibir os dados das transações e categorias */}
             <table className="table">
                 <thead>
                     <tr>
@@ -132,21 +143,24 @@ const TransactionsCategories = () => {
                     </tr>
                 </thead>
                 <tbody>
+                    {/* Mapeamento dos itens para exibição na tabela */}
                     {data.map(item => (
                         <tr key={`${item.transacao.id}-${item.categoria.id}`}>
                             <td>{item.transacao?.descricao}</td>
                             <td>{item.categoria?.nomeCategoria}</td>
                             <td>{item.valor}</td>
                             <td>
+                                {/* Botões de ação: detalhes, edição e exclusão */}
                                 <button onClick={() => handleDetailClick(item)} className="btn btn-info">Detalhes</button>
-                                <button onClick={() => handleEditClick(item)} className="btn btn-warning">Editar</button>
-                                <button onClick={() => handleDeleteClick(item)} className="btn btn-danger">Apagar</button>
+                                <button onClick={() => handleEditClick(item)} className="btn btn-warning" style={{marginLeft:"10px"}}>Editar</button>
+                                <button onClick={() => handleDeleteClick(item)} className="btn btn-danger" style={{marginLeft:"10px"}}>Apagar</button>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
 
+            {/* Modal para exibir os detalhes do item selecionado */}
             {isDetailModalOpen && selectedItem && (
                 <div className="modal">
                     <div className="modal-content">
@@ -159,6 +173,7 @@ const TransactionsCategories = () => {
                 </div>
             )}
 
+            {/* Modal para editar o item selecionado */}
             {isEditModalOpen && selectedItem && (
                 <div className="modal">
                     <div className="modal-content">
@@ -215,6 +230,7 @@ const TransactionsCategories = () => {
                 </div>
             )}
 
+            {/* Modal para confirmar a exclusão do item */}
             {isDeleteModalOpen && selectedItem && (
                 <div className="modal">
                     <div className="modal-content">

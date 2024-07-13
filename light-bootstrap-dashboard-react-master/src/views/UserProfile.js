@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Button, Card, Form, Container, Row, Col } from "react-bootstrap";
-import "../assets/css/user.css";
+import "../assets/css/user.css"; 
 
-const url = "https://dwebnet20240712221837.azurewebsites.net/api/v1";
+const url = "https://dwebnet20240712221837.azurewebsites.net/api/v1"; 
 
 function User() {
+  // Estado para armazenar os dados do utilizador
   const [user, setUser] = useState({
     userName: "",
     email: "",
@@ -13,6 +14,7 @@ function User() {
     userAutent: ""
   });
 
+  // carregar os dados do utilizador do localStorage ao iniciar
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
     if (userData) {
@@ -26,6 +28,7 @@ function User() {
     }
   }, []);
 
+  // atualizar o estado quando os campos do formulário são alterados
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUser({
@@ -34,11 +37,12 @@ function User() {
     });
   };
 
+  // submissão do formulário de edição de perfil
   const handleSubmit = async (e) => {
     e.preventDefault();
     const userData = JSON.parse(localStorage.getItem("user"));
     if (!userData) {
-      alert("User data not found in local storage.");
+      alert("Dados do utilizador não encontrados no armazenamento local.");
       return;
     }
 
@@ -61,7 +65,7 @@ function User() {
       });
 
       if (response.ok) {
-        alert("Profile updated successfully!");
+        alert("Perfil atualizado com sucesso!");
         localStorage.setItem("user", JSON.stringify({
           userName: user.userName,
           email: user.email,
@@ -72,13 +76,14 @@ function User() {
         }));
       } else {
         const errorData = await response.json();
-        alert("Error updating profile. Check the console for more details.");
+        alert("Erro ao atualizar perfil. Verifique o console para mais detalhes.");
       }
     } catch (error) {
-      alert("Error updating profile. Check the console for more details.");
+      alert("Erro ao atualizar perfil. Verifique o console para mais detalhes.");
     }
   };
 
+  // Renderização do componente de perfil do utilizador
   return (
     <Container fluid>
       <Row>
@@ -96,7 +101,7 @@ function User() {
                       <Form.Control
                         name="userName"
                         value={user.userName}
-                        placeholder="Username"
+                        placeholder="Nome de Utilizador"
                         onChange={handleChange}
                       />
                     </Form.Group>
@@ -120,7 +125,7 @@ function User() {
                       <Form.Control
                         name="firstName"
                         value={user.firstName}
-                        placeholder="First Name"
+                        placeholder="Nome"
                         onChange={handleChange}
                       />
                     </Form.Group>
@@ -131,14 +136,14 @@ function User() {
                       <Form.Control
                         name="lastName"
                         value={user.lastName}
-                        placeholder="Last Name"
+                        placeholder="Apelido"
                         onChange={handleChange}
                       />
                     </Form.Group>
                   </Col>
                 </Row>
                 <Button className="btn-fix" type="submit" variant="info">
-                  Update Profile
+                  Atualizar Perfil
                 </Button>
                 <div className="clearfix" />
               </Form>

@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import '../assets/css/SignupLogin.css';
-import { useHistory } from 'react-router-dom';
+import '../assets/css/SignupLogin.css'; 
+import { useHistory } from 'react-router-dom'; 
 
-const url = "https://dwebnet20240712221837.azurewebsites.net/api/v1";
+const url = "https://dwebnet20240712221837.azurewebsites.net/api/v1"; 
 
 export const Signup = () => {
-    const history = useHistory();
+    const history = useHistory(); 
 
+    // armazenar dados do formulário, tipo de password, comparação de passwords e mensagens de erro
     const [formData, setFormData] = useState({
         FirstName: '',
         LastName: '',
@@ -17,20 +18,23 @@ export const Signup = () => {
         UserAutent: ''
     });
 
-    const [passType, setPassType] = useState('password');
-    const [compare, setCompare] = useState(true);
-    const [errorMessage, setErrorMessage] = useState('');
+    const [passType, setPassType] = useState('password'); // Estado para controlar o tipo de input de password
+    const [compare, setCompare] = useState(true); // Estado para comparar se as passwords coincidem
+    const [errorMessage, setErrorMessage] = useState(''); // Estado para armazenar mensagens de erro
 
+    // Função para alternar entre mostrar/esconder password
     const handleShowPassword = () => {
         setPassType(passType === 'password' ? 'text' : 'password');
     };
 
+    // Efeito para comparar as passwords e atualizar o estado 'compare'
     useEffect(() => {
         if (formData.Password && formData.ConfirmPassword) {
             setCompare(formData.Password === formData.ConfirmPassword);
         }
     }, [formData.Password, formData.ConfirmPassword]);
 
+    // Função para lidar com as mudanças nos inputs do formulário
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -39,10 +43,11 @@ export const Signup = () => {
         });
     };
 
+    // Função assíncrona para submeter o formulário de registo
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!compare) {
-            setErrorMessage("Passwords do not match!");
+            setErrorMessage("As passwords não coincidem!");
             return;
         }
     
@@ -54,7 +59,7 @@ export const Signup = () => {
         };
         
         try {
-
+            // Envia um pedido POST para a API para registar o utilizador
             const response = await fetch(`${url}/Register`, {
                 method: 'POST',
                 headers: {
@@ -62,25 +67,28 @@ export const Signup = () => {
                 },
                 body: JSON.stringify(formData)
             });
-            const data = await response.json();
+
+            const data = await response.json(); // Converte a resposta para JSON
             if (response.ok) {
-                alert(data.message);
-                history.push('/login');
+                alert(data.message); // Mostra uma mensagem de sucesso
+                history.push('/login'); // Redireciona para a página de login
             } else {
-                setErrorMessage(data.message || "An error occurred. Please try again.");
+                setErrorMessage(data.message || "Ocorreu um erro. Por favor, tente novamente.");
             }
 
         } catch (error) {
-            setErrorMessage("An error occurred. Please try again.");
+            setErrorMessage("Ocorreu um erro. Por favor, tente novamente.");
         }
     };
 
+    // Renderização do componente de registo
     return (
         <div className="SignupLogin">
             <div className="login-container">
                 <div className="form-box">
                     <h2>Sign Up</h2>
                     <form onSubmit={handleSubmit}>
+                        {/* Inputs do formulário */}
                         <div className="input-box">
                             <input type="text" name="FirstName" value={formData.FirstName} onChange={handleChange} required />
                             <label>Nome</label>
@@ -103,19 +111,20 @@ export const Signup = () => {
                         </div>
                         <div className="input-box">
                             <input type={passType} name="ConfirmPassword" value={formData.ConfirmPassword} onChange={handleChange} required />
-                            <label>Confirm Password</label>
-                            <button type="button" onClick={handleShowPassword} className="btn">Show Password</button>
-                            {!compare && <span className="error">Passwords do not match!</span>}
+                            <label>Confirmar Password</label>
+                            <button type="button" onClick={handleShowPassword} className="btn">Mostrar Password</button>
+                            {!compare && <span className="error">As passwords não coincidem!</span>}
                         </div>
                         {errorMessage && <span className="error">{errorMessage}</span>}
                         <input type="submit" className="btna" />
                     </form>
-                    <p>Already have an account? <a href="/login">Login</a></p>
-                    <p>Initial page: <a href="/hero">Comeback</a></p>
+                    {/* Links adicionais para navegação */}
+                    <p>Já tem uma conta? <a href="/login">Login</a></p>
+                    <p>Página inicial: <a href="/hero">Voltar</a></p>
                 </div>
             </div>
         </div>
     );
 };
 
-export default Signup;
+export default Signup; 
