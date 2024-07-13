@@ -1,41 +1,15 @@
-/*!
-
-=========================================================
-* Light Bootstrap Dashboard React - v2.0.1
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/light-bootstrap-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/light-bootstrap-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-import React, { Component } from "react";
+import React from "react";
 import { useLocation } from "react-router-dom";
-import { Navbar, Container, Nav, Dropdown, Button } from "react-bootstrap";
-import "../../assets/css/app.css";
+import { Navbar, Nav } from "react-bootstrap";
+import "../../assets/css/app.css"; // Se houver estilos personalizados adicionados
 
-import routes from "routes.js";
-import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import routes from "routes.js"; // Certifique-se de que o arquivo de rotas esteja corretamente importado
+import { Link } from "react-router-dom"; // Importe corretamente o Link
 
 function Header() {
   const location = useLocation();
-  const mobileSidebarToggle = (e) => {
-    e.preventDefault();
-    document.documentElement.classList.toggle("nav-open");
-    var node = document.createElement("div");
-    node.id = "bodyClick";
-    node.onclick = function () {
-      this.parentElement.removeChild(this);
-      document.documentElement.classList.toggle("nav-open");
-    };
-    document.body.appendChild(node);
-  };
+  const userData = JSON.parse(localStorage.getItem("user"));
+  const userName = userData ? userData.userName : "Guest";
 
   const getBrandText = () => {
     for (let i = 0; i < routes.length; i++) {
@@ -47,14 +21,23 @@ function Header() {
   };
 
   return (
-    <Navbar bg="light" expand="lg" style={{display: "flex", justifyContent: "flex-end;", alignItems: "center", height: "70px"}}>
-      <ul className= "navbar-nav ml-auto" >
-        <li className="nav-item mt-2"><Link to="/user/dashboard">Home</Link></li>
-        <li className="nav-item mt-2"><Link to="/">ola</Link></li>
-        <li className="nav-item mt-2"><Link to="/ola">ola</Link></li>
-        <li className="nav-item mt-2"><Link to="/ola">ola</Link></li>
-        <li className="nav-item mt-2"><Link to="/ola">ola</Link></li>
-      </ul>
+    <Navbar bg="light" expand="lg">
+      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <Navbar.Collapse id="basic-navbar-nav">
+        <Nav className="me-auto">
+          <Nav.Link as={Link} to="/user/dashboard">Home</Nav.Link>
+          <Nav.Link as={Link} to="/user/moeda">Moedas</Nav.Link>
+          <Nav.Link as={Link} to="/user/orcamento">Orçamentos</Nav.Link>
+          <Nav.Link as={Link} to="/user/historico">Histórico</Nav.Link>
+          <Nav.Link as={Link} to="/user/contas">Contas</Nav.Link>
+          <Nav.Link as={Link} to="/user/profile">Utilizadores</Nav.Link>
+        </Nav>
+        <Nav className="ms-auto">
+          <Nav.Item className="nav-link">
+            Hello, {userName}
+          </Nav.Item>
+        </Nav>
+      </Navbar.Collapse>
     </Navbar>
   );
 }
